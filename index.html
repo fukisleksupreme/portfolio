@@ -1,0 +1,550 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Furkan Islek</title>
+<meta name="description" content="I build the tools I needed and could not find: one for knowing myself, one for checking my own AI systems, and one for my own DJ sets.">
+<meta name="theme-color" content="#f6f6f4">
+<!-- jsDelivr's minified three.module still imports the unminified core (260 KB); the second entry points it at the minified one (102 KB).
+     It must come before the modulepreload links, or a fast preload resolves the import before this map exists. -->
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.0/build/three.module.min.js","https://cdn.jsdelivr.net/npm/three@0.186.0/build/three.core.js":"https://cdn.jsdelivr.net/npm/three@0.186.0/build/three.core.min.js"}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.186.0/build/three.module.min.js" crossorigin>
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.186.0/build/three.core.min.js" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500&family=Geist+Mono:wght@400&display=swap">
+<style>
+:root{
+  --paper:#f6f6f4; --ink:#0b0b0c; --ink-2:#2e2e32; --graphite:#6a6a6f; --hair:#d9d9d5;
+  --night:#070707; --night-ink:#ecebe6; --night-2:#bdbab3; --night-dim:#86837c; --night-hair:#262523;
+  --g:clamp(16px,4.2vw,56px);
+  --sans:'Geist',ui-sans-serif,system-ui,-apple-system,'Helvetica Neue',Arial,sans-serif;
+  --mono:'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{background:var(--paper);-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 17px/1.55 var(--sans);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden}
+a{color:inherit}
+:focus-visible{outline:2px solid currentColor;outline-offset:3px}
+
+/* the one canvas; every drawing is rendered into the rectangle of its slot */
+#gl{position:fixed;left:0;top:0;width:100%;height:100vh;height:100lvh;z-index:1;pointer-events:none;display:block}
+.lift{position:relative;z-index:2}
+.wrap{padding-inline:var(--g);max-width:1480px;margin-inline:auto}
+.mono{font-family:var(--mono);font-size:12px;line-height:1.4;letter-spacing:.06em;text-transform:uppercase}
+
+/* bar: sits on the hero and scrolls away, so it never lies over body text */
+.bar{position:absolute;left:0;right:0;top:0;z-index:5;color:var(--ink);padding-top:env(safe-area-inset-top,0px)}
+.bar .wrap{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding-block:18px}
+.bar a{text-decoration:none}
+.bar .name{font-weight:500;font-size:15px;letter-spacing:-.01em}
+.bar nav{display:flex;gap:22px}
+.bar .to-contact{display:none}
+@media (max-width:560px){.bar nav{display:none}.bar .to-contact{display:inline}}
+
+/* hero */
+.hero{padding-block:clamp(104px,17vh,190px) clamp(48px,8vh,96px)}
+.hero h1{margin:0;font-weight:500;font-size:clamp(31px,4.7vw,70px);line-height:1.03;letter-spacing:-.042em;max-width:23ch;text-wrap:balance}
+.trip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(10px,2.2vw,36px);margin-top:clamp(28px,5vh,72px)}
+.trip figure{margin:0;display:flex;flex-direction:column}
+.slot{width:100%;display:block}
+.trip .slot{aspect-ratio:5/4}
+.trip figcaption{display:flex;justify-content:space-between;align-items:baseline;gap:8px;border-top:1px solid var(--hair);padding-top:10px;margin-top:6px}
+.trip figcaption a{text-decoration:none;font-size:clamp(12px,1.25vw,15px);font-weight:500;letter-spacing:-.01em}
+.trip figcaption span{color:var(--graphite)}
+.now{display:grid;grid-template-columns:minmax(0,1fr);gap:6px;margin-top:clamp(40px,7vh,80px);max-width:60ch}
+.now .mono{color:var(--graphite)}
+.now p{margin:0;font-size:clamp(16px,1.4vw,19px);color:var(--ink-2)}
+
+/* chapters */
+.chapter{padding-block:clamp(104px,15vh,176px)}
+.chapter.night{background:var(--night);color:var(--night-ink)}
+.ch{display:grid;grid-template-columns:minmax(0,1fr);row-gap:clamp(28px,5vh,56px)}
+.ch-head .mono{color:var(--graphite);margin:0 0 18px}
+.night .ch-head .mono{color:var(--night-dim)}
+.ch h2{margin:0;font-weight:500;font-size:clamp(54px,10.5vw,158px);line-height:.9;letter-spacing:-.058em}
+.ch .line{margin:clamp(18px,3vh,30px) 0 0;font-size:clamp(21px,2.2vw,31px);line-height:1.22;letter-spacing:-.022em;max-width:24ch;text-wrap:balance}
+.ch-stage{width:auto;margin-inline:calc(-1 * var(--g));aspect-ratio:1/1.02;max-width:none}
+.ch-body{max-width:58ch}
+.ch-body p{margin:0 0 1.05em;color:var(--ink-2)}
+.night .ch-body p{color:var(--night-2)}
+.ch-body strong{font-weight:500;color:var(--ink)}
+.night .ch-body strong{color:var(--night-ink)}
+.ch-foot{display:flex;gap:18px;align-items:baseline;padding-top:18px;margin-top:8px;border-top:1px solid var(--hair)}
+.night .ch-foot{border-color:var(--night-hair)}
+.ch-foot a{text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:2px}
+.ch-foot .off{color:var(--graphite)}
+@media (min-width:920px){
+  .ch{grid-template-columns:minmax(0,5fr) minmax(0,6fr);column-gap:clamp(40px,6vw,110px);align-items:start}
+  .ch-head{grid-column:1 / -1;grid-row:1}
+  .ch-body{grid-column:1;grid-row:2}
+  .ch-stage{grid-column:2;grid-row:2;position:sticky;top:10vh;height:80vh;aspect-ratio:auto;margin-inline:0 calc(-1 * var(--g))}
+}
+
+/* the Ten People Test on one scale, numbers verbatim from the case study */
+.scale{margin:4px 0 30px;color:var(--night-dim)}
+.scale svg{display:block;width:100%;max-width:520px;height:auto;overflow:visible}
+.scale text{font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;fill:var(--night-dim)}
+.scale .hi{fill:var(--night-ink)}
+
+/* outro */
+.outro{padding-block:clamp(96px,16vh,190px) clamp(56px,9vh,110px);border-top:1px solid var(--hair)}
+.outro p.big{margin:0;font-weight:500;font-size:clamp(34px,6.4vw,100px);line-height:.98;letter-spacing:-.05em;max-width:15ch;text-wrap:balance}
+.meta{display:grid;grid-template-columns:minmax(0,1fr);gap:22px;margin-top:clamp(48px,9vh,110px);color:var(--graphite)}
+.meta p{margin:0}
+.meta .mono{display:block;margin-bottom:6px}
+@media (min-width:760px){.meta{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.meta .v{color:var(--ink-2);font-size:15px;line-height:1.45}
+
+/* load sequence: a short rise, from a resting state that is already readable */
+.rise{animation:rise .95s cubic-bezier(.2,.7,.1,1) both}
+.rise.d1{animation-delay:.08s}.rise.d2{animation-delay:.18s}
+@keyframes rise{from{opacity:.001;transform:translateY(14px)}}
+@media (prefers-reduced-motion:reduce){.rise{animation:none}html{scroll-behavior:auto}}
+html{scroll-behavior:smooth}
+
+#dbg{position:fixed;right:8px;bottom:calc(8px + env(safe-area-inset-bottom,0px));z-index:9;font:11px/1.35 var(--mono);background:#000;color:#0f0;padding:6px 8px;white-space:pre;pointer-events:none}
+.no-gl .slot{background:repeating-linear-gradient(90deg,transparent 0 11px,var(--hair) 11px 12px);opacity:.35}
+</style>
+</head>
+<body>
+<canvas id="gl" aria-hidden="true"></canvas>
+
+<header class="bar">
+  <div class="wrap">
+    <a class="name" href="#top">Furkan Islek</a>
+    <nav class="mono" aria-label="Projects">
+      <a href="#five-lights">Five Lights</a>
+      <a href="#ouroboros">OUROBOROS</a>
+      <a href="#pulseengine">PulseEngine</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <a class="mono to-contact" href="#contact">Contact</a>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero wrap lift">
+    <h1 class="rise">I build the tools I needed and could not find: one for knowing myself, one for checking my own AI systems, and one for my own DJ sets.</h1>
+    <div class="trip">
+      <figure class="rise d1">
+        <div class="slot" data-obj="lights" data-variant="hero" data-delay="0"></div>
+        <figcaption><a href="#five-lights">Five Lights</a><span class="mono">01</span></figcaption>
+      </figure>
+      <figure class="rise d1">
+        <div class="slot" data-obj="loop" data-variant="hero" data-delay="0.22"></div>
+        <figcaption><a href="#ouroboros">OUROBOROS</a><span class="mono">02</span></figcaption>
+      </figure>
+      <figure class="rise d1">
+        <div class="slot" data-obj="pulse" data-variant="hero" data-delay="0.44"></div>
+        <figcaption><a href="#pulseengine">PulseEngine</a><span class="mono">03</span></figcaption>
+      </figure>
+    </div>
+    <div class="now rise d2">
+      <span class="mono">Currently</span>
+      <p>Business Insights &amp; Analytics postgraduate student at Humber College, term 2.</p>
+    </div>
+  </section>
+
+  <section class="chapter night" id="five-lights" aria-labelledby="h-fl">
+    <div class="wrap ch">
+      <div class="ch-head lift">
+        <p class="mono">01 · One for knowing myself</p>
+        <h2 id="h-fl">Five Lights</h2>
+        <p class="line">A self-reflection product that tests whether its own writing is actually about you.</p>
+      </div>
+      <div class="slot ch-stage" data-obj="lights" data-variant="chapter"></div>
+      <div class="ch-body lift">
+        <div class="scale">
+          <svg viewBox="0 0 440 92" role="img" aria-label="Ten People Test: chance is 50%, the corpus scores 60.0% with a 95% CI of 52.7 to 66.9, and the first run scored 72.8%, which was a leak in the test.">
+            <g id="scale-g"></g>
+          </svg>
+        </div>
+        <p><strong>Five Lights</strong> is a self-reflection product: a person gives their birth details and a short intake, and receives a long written reading. It is live, with a real checkout.</p>
+        <p>The frameworks behind it are reflection tools, not science, so the question worth measuring is whether the writing is specific to its reader or would fit anyone. I built two instruments for that. The Ten People Test asks a blind judge to match a sentence to one of two readers’ profiles; chance is 50%, and the corpus scores 60.0% (95% CI 52.7 to 66.9). Its first run scored 72.8%, and that was a leak in the test, not a result: every fix since has lowered the number. A Forer test, where people rate their own reading blind against someone else’s, is collecting its first 17 clean ratings.</p>
+        <div class="ch-foot mono"><a href="https://fivelights.app" rel="noopener">fivelights.app</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="ouroboros" aria-labelledby="h-ou">
+    <div class="wrap ch">
+      <div class="ch-head lift">
+        <p class="mono">02 · One for checking my own AI systems</p>
+        <h2 id="h-ou">OUROBOROS</h2>
+        <p class="line">Commission the research, audit it against what’s running, then check the decision actually shipped.</p>
+      </div>
+      <div class="slot ch-stage" data-obj="loop" data-variant="chapter"></div>
+      <div class="ch-body lift">
+        <p><strong>OUROBOROS</strong> is a research, audit and decision process I ran on my own AI agent system. It began with a commissioned report, about 77 sources, on self-improving multi-agent architectures and how to evaluate them.</p>
+        <p>I did not adopt the report. I audited it line by line against what my system actually ran, kept what fit, and refused the rest with reasons: monthly infrastructure budgets in the thousands, GPU clusters, safety layers sourced to vendor marketing.</p>
+        <p>Then I checked what shipped. Of six approved changes, one had become enforced code; five were only prose. Now a decision ships with its mechanism, or it is recorded as not done. The system it grew into works the same way: every change it proposes to itself is tested against a fixed set of tasks first, and one that does worse is never adopted. Still in progress, it is heading toward an agent orchestration system.</p>
+        <div class="ch-foot mono"><span class="off">No public link yet</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="pulseengine" aria-labelledby="h-pe">
+    <div class="wrap ch">
+      <div class="ch-head lift">
+        <p class="mono">03 · One for my own DJ sets</p>
+        <h2 id="h-pe">PulseEngine</h2>
+        <p class="line">Software I’m building to turn live DJ music into real-time visuals, lyrics and projection.</p>
+      </div>
+      <div class="slot ch-stage" data-obj="pulse" data-variant="chapter"></div>
+      <div class="ch-body lift">
+        <p><strong>PulseEngine</strong> is real-time visual software for live DJ sets, built for my own. It listens to the music as it plays, locks to the tempo, and drives visuals on the beat. It generates images with AI in real time, transcribes lyrics from the vocals onto the screen as they are sung, and projection-maps the result onto physical surfaces. Motion reactivity is still in development.</p>
+        <p>The detail that shaped it: an early build crashed on launch from a bug in its audio analysis, and a quieter one made the tempo estimate meaningless. Both are fixed, and the rule since is to test with real sound in the real room before a set, never after.</p>
+        <div class="ch-foot mono"><span class="off">No public link yet</span></div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="outro wrap lift">
+    <p class="big">I build the tools I need, then use them myself.</p>
+    <div class="meta">
+      <p><span class="mono">Furkan Islek</span><span class="v">Business Insights &amp; Analytics postgraduate student at Humber College, term 2.</span></p>
+      <p><span class="mono">Live</span><span class="v"><a href="https://fivelights.app" rel="noopener">fivelights.app</a></span></p>
+      <p id="contact"><span class="mono">Contact</span><span class="v"><a href="mailto:furkanislek@gmail.com">furkanislek@gmail.com</a></span></p>
+    </div>
+  </footer>
+</main>
+
+<script>
+/* the scale figure is drawn from the case study's own numbers, so it cannot drift from the text */
+(function(){
+  var g=document.getElementById('scale-g'); if(!g) return;
+  var lo=48, hi=76, x0=8, x1=432, y=48;
+  function X(v){return x0+(v-lo)/(hi-lo)*(x1-x0);}
+  var ns='http://www.w3.org/2000/svg', s='';
+  s+='<line x1="'+x0+'" y1="'+y+'" x2="'+x1+'" y2="'+y+'" stroke="currentColor" stroke-width="1" opacity=".45"/>';
+  [50,55,60,65,70,75].forEach(function(v){s+='<line x1="'+X(v)+'" y1="'+(y-3)+'" x2="'+X(v)+'" y2="'+(y+3)+'" stroke="currentColor" opacity=".5"/>';});
+  s+='<line x1="'+X(50)+'" y1="'+(y-14)+'" x2="'+X(50)+'" y2="'+(y+14)+'" stroke="currentColor" stroke-dasharray="2 3"/>';
+  s+='<text x="'+X(50)+'" y="'+(y-20)+'">chance 50%</text>';
+  s+='<line x1="'+X(52.7)+'" y1="'+y+'" x2="'+X(66.9)+'" y2="'+y+'" stroke="#ecd3a4" stroke-width="3"/>';
+  s+='<line x1="'+X(52.7)+'" y1="'+(y-6)+'" x2="'+X(52.7)+'" y2="'+(y+6)+'" stroke="#ecd3a4"/>';
+  s+='<line x1="'+X(66.9)+'" y1="'+(y-6)+'" x2="'+X(66.9)+'" y2="'+(y+6)+'" stroke="#ecd3a4"/>';
+  s+='<circle cx="'+X(60)+'" cy="'+y+'" r="4.5" fill="#fff8ea"/>';
+  s+='<text class="hi" x="'+X(60)+'" y="'+(y-20)+'" text-anchor="middle">60.0%</text>';
+  s+='<text x="'+X(59.8)+'" y="'+(y+26)+'" text-anchor="middle">95% CI 52.7 to 66.9</text>';
+  s+='<circle cx="'+X(72.8)+'" cy="'+y+'" r="4" fill="none" stroke="currentColor"/>';
+  s+='<text x="'+X(72.8)+'" y="'+(y-20)+'" text-anchor="middle">72.8%</text>';
+  s+='<text x="'+x1+'" y="'+(y+26)+'" text-anchor="end">first run, a leak</text>';
+  g.innerHTML=s;
+})();
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+
+const T0 = performance.now();
+const Q = new URLSearchParams(location.search);
+const DEBUG = Q.has('debug') || /debug/.test(location.hash);
+const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const SMALL = matchMedia('(max-width: 700px)').matches;
+/* native resolution by default: at DPR 2 the arcs thicken and stair-step, at DPR 3 they stay filaments, and measured cost is flat */
+const DPR_CAP = Q.get('dpr') ? Math.max(0.5, +Q.get('dpr')) : 3;
+const canvas = document.getElementById('gl');
+const perf = window.__perf = { mode: 'init', dpr: 0, fps: 0, p95: 0, frames: 0, downgrades: [], firstFrameMs: 0, slotsDrawn: 0 };
+
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const hex = h => { const n = parseInt(h.slice(1), 16); return new THREE.Vector3((n >> 16 & 255) / 255, (n >> 8 & 255) / 255, (n & 255) / 255); };
+/* colours go to the shaders as raw sRGB triples: no colour management, so the paper fill matches the CSS paper byte for byte */
+const C = { ink: hex('#0b0b0c'), paper: hex('#f6f6f4'), fil: hex('#e9cf9f'), hot: hex('#fff8ea') };
+function rng(seed) { return () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+
+let renderer = null;
+try {
+  renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: devicePixelRatio < 2, powerPreference: 'high-performance', premultipliedAlpha: true });
+} catch (e) { renderer = null; }
+if (!renderer) { document.documentElement.classList.add('no-gl'); perf.mode = 'no-webgl'; }
+else main();
+
+function main() {
+  renderer.autoClear = false;
+  renderer.setClearColor(0x000000, 0);
+
+  /* premultiplied blending: ink lays over paper like ink, light adds on night like light */
+  const OVER = { blending: THREE.CustomBlending, blendSrc: THREE.OneFactor, blendDst: THREE.OneMinusSrcAlphaFactor, blendSrcAlpha: THREE.OneFactor, blendDstAlpha: THREE.OneMinusSrcAlphaFactor };
+  const ADD = { blending: THREE.CustomBlending, blendSrc: THREE.OneFactor, blendDst: THREE.OneFactor, blendSrcAlpha: THREE.OneFactor, blendDstAlpha: THREE.OneFactor };
+  const mat = (vertexShader, fragmentShader, uniforms, blend, extra = {}) =>
+    new THREE.ShaderMaterial({ vertexShader, fragmentShader, uniforms, transparent: true, depthTest: false, depthWrite: false, ...blend, ...extra });
+
+  /* ---------- Five Lights: a disc of separate filament arcs, never a glow ---------- */
+  const DISC_VS = `
+    attribute vec4 aArc;   // radius, start angle, arc length, angular speed
+    attribute float aSeed;
+    uniform float uTime, uReveal;
+    varying float vA, vHot;
+    void main(){
+      float t = position.x;
+      float ang = aArc.y + t * aArc.z + uTime * aArc.w;
+      vec3 p = vec3(cos(ang) * aArc.x, position.z, sin(ang) * aArc.x);
+      float taper = pow(sin(3.14159265 * t), 0.75);
+      float beam = 0.5 + 0.5 * sin(ang + 0.6);          // the approaching side reads brighter
+      float drawn = clamp(uReveal * 1.7 - aSeed * 0.7, 0.0, 1.0);
+      float a = position.y * taper * (0.35 + 0.65 * beam);
+      vHot = a;
+      vA = a * step(t, drawn);
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0);
+    }`;
+  const DISC_FS = `
+    uniform vec3 uColor, uHot; uniform float uGain;
+    varying float vA, vHot;
+    void main(){
+      float a = clamp(vA * uGain, 0.0, 1.0);
+      vec3 c = mix(uColor, uHot, 0.55 * smoothstep(0.6, 1.0, vHot));   // white comes from overlap, not from one arc
+      gl_FragColor = vec4(c * a, a);
+    }`;
+  function buildDisc(n) {
+    const R = rng(7), pos = [], arc = [], seed = [];
+    for (let i = 0; i < n; i++) {
+      const r = 1 + 1.4 * Math.pow(R(), 1.35);
+      const a0 = R() * Math.PI * 2, len = (0.16 + R() * 1.25) * Math.PI;
+      const sp = 0.3 * Math.pow(r, -1.5);                // Kepler: inner arcs orbit faster
+      const inten = 0.22 + 0.78 * Math.pow(R(), 1.6), y = (R() - 0.5) * 0.03 * r, sd = R();
+      const seg = Math.max(10, Math.ceil(len * r * (SMALL ? 26 : 36)));
+      for (let s = 0; s < seg; s++) for (const tt of [s / seg, (s + 1) / seg]) { pos.push(tt, inten, y); arc.push(r, a0, len, sp); seed.push(sd); }
+    }
+    const g = new THREE.BufferGeometry();
+    g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+    g.setAttribute('aArc', new THREE.Float32BufferAttribute(arc, 4));
+    g.setAttribute('aSeed', new THREE.Float32BufferAttribute(seed, 1));
+    return g;
+  }
+  const DISC = buildDisc(SMALL ? 72 : 96);
+
+  const PT_VS = `
+    attribute float aSeed; uniform float uTime, uPx, uReveal; varying float vA;
+    void main(){
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      float tw = 0.82 + 0.18 * sin(uTime * (0.5 + aSeed) + aSeed * 19.0);
+      gl_PointSize = uPx * (1.6 + aSeed * 1.6);
+      vA = tw * smoothstep(0.55, 1.0, uReveal);
+    }`;
+  const PT_FS = `
+    uniform vec3 uColor; varying float vA;
+    void main(){ float d = length(gl_PointCoord - 0.5); float a = smoothstep(0.5, 0.3, d) * vA; gl_FragColor = vec4(uColor * a, a); }`;
+  const LIGHTS = new THREE.BufferGeometry();
+  /* five distant lights at unequal depths, their relationship deliberately not legible */
+  LIGHTS.setAttribute('position', new THREE.Float32BufferAttribute([-1.9, 1.5, -2.2, -0.7, 2.25, -5.5, 0.9, 2.9, -10, -3.1, 1.2, -7.5, 1.5, 1.85, -3.4], 3));
+  LIGHTS.setAttribute('aSeed', new THREE.Float32BufferAttribute([0.9, 0.35, 0.1, 0.55, 0.7], 1));
+
+  function makeLights(variant) {
+    const night = variant === 'chapter';
+    const scene = new THREE.Scene(), cam = new THREE.PerspectiveCamera(30, 1, 0.1, 100);
+    const u = { uTime: { value: 0 }, uReveal: { value: 0 }, uGain: { value: night ? 1.45 : 0.95 }, uColor: { value: night ? C.fil : C.ink }, uHot: { value: night ? C.hot : C.ink } };
+    const disc = new THREE.LineSegments(DISC, mat(DISC_VS, DISC_FS, u, night ? ADD : OVER));
+    disc.frustumCulled = false;
+    const g = new THREE.Group(); g.add(disc); scene.add(g);
+    let pu = null;
+    if (night) {
+      pu = { uTime: u.uTime, uReveal: u.uReveal, uPx: { value: 2 }, uColor: { value: C.hot } };
+      const pts = new THREE.Points(LIGHTS, mat(PT_VS, PT_FS, pu, ADD)); pts.frustumCulled = false; scene.add(pts);
+    }
+    return { scene, cam, update(t, prog, rev, aspect, px) {
+      u.uTime.value = t; u.uReveal.value = rev; if (pu) pu.uPx.value = px;
+      g.rotation.set(0.34 + (prog - 0.5) * 0.24, 0, -0.21);
+      if (night) {
+        const wide = aspect > 1.15;
+        const D = clamp((wide ? 2.6 : 1.75) / (0.2679 * aspect), 5.6, 16);
+        g.position.set(wide ? 0.4 : 0.8, -0.2 - (prog - 0.5) * 0.3, 0);
+        cam.position.set(0, 0.1, D);
+      } else { g.position.set(0, 0, 0); cam.position.set(0, 0, 2.62 / (0.2679 * Math.min(aspect, 1))); }
+      cam.aspect = aspect; cam.lookAt(0, 0, 0); cam.updateProjectionMatrix();
+    } };
+  }
+
+  /* ---------- OUROBOROS: a closed knot whose head is always about to meet its tail ---------- */
+  const KNOT_VS = `
+    attribute float aU; uniform float uTime, uReveal, uPeriod; varying float vA;
+    void main(){
+      vec4 mv = modelViewMatrix * vec4(position, 1.0);
+      float head = fract(uTime / uPeriod);
+      float d = fract(head - aU);                       // 0 at the head, rising toward the tail
+      float L = 0.9;
+      float body = d < L ? (0.18 + 0.82 * exp(-d * 4.0)) * smoothstep(L, L - 0.35, d) * smoothstep(0.0, 0.012, d) : 0.0;
+      float depth = smoothstep(-2.0, 1.2, mv.z + length(cameraPosition));
+      vA = max(body, 0.13) * mix(0.3, 1.0, depth) * step(aU, uReveal);
+      gl_Position = projectionMatrix * mv;
+    }`;
+  const INK_FS = `
+    uniform vec3 uColor; uniform float uGain; varying float vA;
+    void main(){ float a = clamp(vA * uGain, 0.0, 1.0); gl_FragColor = vec4(uColor * a, a); }`;
+  function buildKnot(strands, M) {
+    const P = (u, o) => { const ph = u * Math.PI * 2, r = Math.cos(3 * ph) + 2.25; return o.set(r * Math.cos(2 * ph), r * Math.sin(2 * ph), -1.15 * Math.sin(3 * ph)).multiplyScalar(0.34); };
+    const a = new THREE.Vector3(), b = new THREE.Vector3(), p = new THREE.Vector3(), T = new THREE.Vector3(), N = new THREE.Vector3(), B = new THREE.Vector3(), c = new THREE.Vector3();
+    const rings = [];
+    for (let i = 0; i < M; i++) {
+      const u = i / M, ph = u * Math.PI * 2;
+      P(u, p); P(u + 1e-4, a); P(u - 1e-4, b); T.subVectors(a, b).normalize();
+      c.set(2.25 * Math.cos(2 * ph), 2.25 * Math.sin(2 * ph), 0).multiplyScalar(0.34);
+      N.subVectors(p, c); N.addScaledVector(T, -N.dot(T)).normalize(); B.crossVectors(T, N);
+      const ring = [];
+      for (let s = 0; s < strands; s++) { const th = s / strands * Math.PI * 2, rr = 0.075; ring.push(p.x + rr * (Math.cos(th) * N.x + Math.sin(th) * B.x), p.y + rr * (Math.cos(th) * N.y + Math.sin(th) * B.y), p.z + rr * (Math.cos(th) * N.z + Math.sin(th) * B.z)); }
+      rings.push(ring);
+    }
+    const pos = [], us = [];
+    for (let s = 0; s < strands; s++) for (let i = 0; i < M; i++) {
+      const j = (i + 1) % M;
+      pos.push(rings[i][s * 3], rings[i][s * 3 + 1], rings[i][s * 3 + 2], rings[j][s * 3], rings[j][s * 3 + 1], rings[j][s * 3 + 2]);
+      us.push(i / M, j === 0 ? 0.99999 : j / M);
+    }
+    const g = new THREE.BufferGeometry();
+    g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+    g.setAttribute('aU', new THREE.Float32BufferAttribute(us, 1));
+    return g;
+  }
+  const KNOT = buildKnot(SMALL ? 7 : 9, SMALL ? 520 : 760);
+  function makeLoop(variant) {
+    const hero = variant === 'hero';
+    const scene = new THREE.Scene(), cam = new THREE.PerspectiveCamera(30, 1, 0.1, 100);
+    const u = { uTime: { value: 0 }, uReveal: { value: 0 }, uPeriod: { value: 11 }, uColor: { value: C.ink }, uGain: { value: hero ? 0.62 : 1.05 } };
+    const knot = new THREE.LineSegments(KNOT, mat(KNOT_VS, INK_FS, u, OVER)); knot.frustumCulled = false;
+    const g = new THREE.Group(); g.add(knot); scene.add(g);
+    return { scene, cam, update(t, prog, rev, aspect) {
+      u.uTime.value = t; u.uReveal.value = rev;
+      g.rotation.set(0.3 + (prog - 0.5) * 0.6, Math.sin(t * 0.13) * 0.4, t * 0.045);
+      const D = (hero ? 1.36 : 1.62) / (0.2679 * Math.min(aspect, 1));
+      cam.position.set(0, 0, D); cam.aspect = aspect; cam.lookAt(0, 0, 0); cam.updateProjectionMatrix();
+    } };
+  }
+
+  /* ---------- PulseEngine: a spectrum waterfall, one new row per beat at 120 BPM ---------- */
+  const RIDGE_VS = `
+    uniform float uTime, uReveal, uRate, uRows; varying float vA;
+    float h1(float n){ return fract(sin(n) * 43758.5453123); }
+    float vn(vec2 p){ vec2 i = floor(p), f = fract(p); vec2 w = f * f * (3.0 - 2.0 * f);
+      float n = i.x + i.y * 57.0;
+      return mix(mix(h1(n), h1(n + 1.0), w.x), mix(h1(n + 57.0), h1(n + 58.0), w.x), w.y); }
+    void main(){
+      float s = uTime * uRate;
+      float k = position.y + fract(s);                  // continuous row position, 0 is the newest
+      float born = floor(s) - position.y;               // which beat this row belongs to
+      float x = position.x;
+      float env = exp(-x * x * 2.6) * (0.75 + 0.25 * sin(x * 2.0 + 1.3));
+      float n = vn(vec2(x * 4.5, born * 0.41)) * 0.62 + vn(vec2(x * 10.0 + 3.1, born * 0.93)) * 0.38;
+      float kick = 0.5 + 0.5 * h1(born * 1.713 + 4.0);
+      float h = env * pow(n, 1.55) * kick * 1.25;
+      h *= smoothstep(0.0, 1.0, min(k, 1.0));
+      h *= 1.0 + 0.35 * exp(-fract(s) * 5.0) * (1.0 - smoothstep(0.0, 1.6, k));
+      float top = position.z;
+      float y = k * 0.072 + h * top - (1.0 - top) * 1.2;
+      vec3 p = vec3(x * 1.65, y, -k * 0.2);
+      float back = 1.0 - smoothstep(uRows - 4.0, uRows - 1.0, k);
+      float near = mix(0.4, 1.0, 1.0 - k / uRows);
+      vA = back * near * step((x + 1.0) * 0.5, uReveal * 1.35 - position.y / uRows * 0.35);
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0);
+    }`;
+  const FILL_FS = `uniform vec3 uPaper; void main(){ gl_FragColor = vec4(uPaper, 1.0); }`;
+  function buildRidges(rows, cols) {
+    const lp = [], fp = [], idx = [];
+    for (let i = 0; i < rows; i++) {
+      for (let c = 0; c < cols - 1; c++) { const x0 = -1 + 2 * c / (cols - 1), x1 = -1 + 2 * (c + 1) / (cols - 1); lp.push(x0, i, 1, x1, i, 1); }
+      const base = fp.length / 3;
+      for (let c = 0; c < cols; c++) { const x = -1 + 2 * c / (cols - 1); fp.push(x, i, 1, x, i, 0); }
+      for (let c = 0; c < cols - 1; c++) { const a = base + c * 2; idx.push(a, a + 1, a + 2, a + 1, a + 3, a + 2); }
+    }
+    const L = new THREE.BufferGeometry(); L.setAttribute('position', new THREE.Float32BufferAttribute(lp, 3));
+    const F = new THREE.BufferGeometry(); F.setAttribute('position', new THREE.Float32BufferAttribute(fp, 3)); F.setIndex(idx);
+    return { L, F, rows };
+  }
+  const RIDGES = buildRidges(SMALL ? 30 : 38, SMALL ? 110 : 150);
+  function makePulse(variant) {
+    const hero = variant === 'hero';
+    const scene = new THREE.Scene(), cam = new THREE.PerspectiveCamera(30, 1, 0.1, 100);
+    const u = { uTime: { value: 0 }, uReveal: { value: 0 }, uRate: { value: 2 }, uRows: { value: RIDGES.rows }, uColor: { value: C.ink }, uGain: { value: hero ? 0.9 : 1.0 }, uPaper: { value: C.paper } };
+    const fill = new THREE.Mesh(RIDGES.F, mat(RIDGE_VS, FILL_FS, u, { blending: THREE.NoBlending }, { transparent: false, depthTest: true, depthWrite: true, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1 }));
+    const line = new THREE.LineSegments(RIDGES.L, mat(RIDGE_VS, INK_FS, u, OVER, { depthTest: true, depthWrite: true }));
+    fill.frustumCulled = line.frustumCulled = false; fill.renderOrder = 0; line.renderOrder = 1;
+    scene.add(fill, line);
+    return { scene, cam, update(t, prog, rev, aspect) {
+      u.uTime.value = t; u.uReveal.value = rev;
+      const D = (hero ? 1.9 : 1.78) / (0.2679 * Math.min(aspect, 1.25));
+      cam.position.set(0, 1.25 + (prog - 0.5) * 0.9, D + 0.4);
+      cam.aspect = aspect; cam.lookAt(0, 0.62, -3.2); cam.updateProjectionMatrix();
+    } };
+  }
+
+  const MAKERS = { lights: makeLights, loop: makeLoop, pulse: makePulse };
+  const slots = [...document.querySelectorAll('.slot[data-obj]')].map(el => ({
+    el, delay: +(el.dataset.delay || 0), start: null, ...MAKERS[el.dataset.obj](el.dataset.variant)
+  }));
+
+  let dpr = Math.min(devicePixelRatio || 1, DPR_CAP), W = 0, H = 0;
+  function resize() {
+    W = canvas.clientWidth; H = canvas.clientHeight;
+    renderer.setPixelRatio(dpr); renderer.setSize(W, H, false);
+    perf.dpr = dpr;
+  }
+  resize();
+
+  let drewLast = true;
+  function draw(now, t) {
+    if (canvas.clientWidth !== W || canvas.clientHeight !== H) resize();
+    let n = 0;
+    const jobs = [];
+    for (const s of slots) {
+      const r = s.el.getBoundingClientRect();
+      if (r.bottom <= 0 || r.top >= H || r.right <= 0 || r.left >= W || r.width < 2 || r.height < 2) continue;
+      jobs.push([s, r]);
+    }
+    if (!jobs.length && !drewLast) return 0;
+    renderer.setScissorTest(false); renderer.clear(); renderer.setScissorTest(true);
+    for (const [s, r] of jobs) {
+      if (s.start === null) s.start = now + s.delay * 1000;
+      const e = REDUCED ? 1 : clamp((now - s.start) / 2100, 0, 1);
+      const rev = 1 - Math.pow(1 - e, 3);
+      const prog = clamp((H - r.top) / (H + r.height), 0, 1);
+      s.update(t, prog, rev, r.width / r.height, dpr);
+      const y = H - r.bottom;
+      renderer.setViewport(r.left, y, r.width, r.height);
+      renderer.setScissor(r.left, y, r.width, r.height);
+      renderer.clearDepth();
+      renderer.render(s.scene, s.cam);
+      n++;
+    }
+    drewLast = n > 0; perf.slotsDrawn = n;
+    return n;
+  }
+
+  /* adaptive quality: measure real frame intervals, shed resolution before anything visibly stutters */
+  let last = 0, iv = [], live = !REDUCED, raf = 0;
+  const FROZEN_T = 14.0;
+  function assess() {
+    if (iv.length < 45) return;
+    const sorted = [...iv].sort((a, b) => a - b), mean = iv.reduce((a, b) => a + b, 0) / iv.length;
+    perf.fps = Math.round(1000 / mean * 10) / 10; perf.p95 = Math.round(sorted[Math.floor(sorted.length * 0.95)] * 10) / 10;
+    iv = [];
+    if (perf.frames < 90) return;
+    if (mean > 21 && dpr > 1) { dpr = Math.max(1, dpr > 2 ? 2 : dpr - 0.5); perf.downgrades.push({ at: Math.round(performance.now() - T0), fps: perf.fps, to: dpr }); resize(); }
+    else if (mean > 48 && dpr <= 1) { live = false; perf.mode = 'static'; perf.downgrades.push({ at: Math.round(performance.now() - T0), fps: perf.fps, to: 'static' }); }
+  }
+  function loop(now) {
+    if (!live) { raf = 0; return; }
+    raf = requestAnimationFrame(loop);
+    if (last) { const dt = now - last; if (dt < 250) iv.push(dt); }
+    last = now;
+    draw(now, (now - T0) / 1000);
+    perf.frames++;
+    if (perf.frames === 1) { perf.firstFrameMs = Math.round(now - T0); perf.firstFrameAt = Math.round(now); }
+    if (iv.length >= 60) assess();
+  }
+  function kick() { if (!live && !raf) raf = requestAnimationFrame(n => { raf = 0; draw(n, FROZEN_T); }); }
+  document.addEventListener('visibilitychange', () => { last = 0; iv = []; });
+  addEventListener('scroll', kick, { passive: true });
+  addEventListener('resize', kick);
+  perf.mode = live ? 'live' : 'reduced-motion';
+  if (live) raf = requestAnimationFrame(loop); else kick();
+
+  if (DEBUG) {
+    const d = document.createElement('div'); d.id = 'dbg'; document.body.appendChild(d);
+    setInterval(() => { d.textContent = `fps ${perf.fps}  p95 ${perf.p95}ms\ndpr ${perf.dpr} / device ${devicePixelRatio}\nmode ${perf.mode}  slots ${perf.slotsDrawn}\ncalls ${renderer.info.render.calls}  first ${perf.firstFrameMs}ms\n${perf.downgrades.map(x => '→' + x.to).join(' ')}`; }, 500);
+  }
+}
+</script>
+</body>
+</html>
