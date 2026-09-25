@@ -59,13 +59,15 @@ a{color:inherit}
 /* hero */
 .hero{padding-block:clamp(104px,17vh,190px) clamp(48px,8vh,96px)}
 .hero h1{margin:0;font-weight:500;font-size:clamp(31px,4.7vw,70px);line-height:1.03;letter-spacing:-.042em;max-width:23ch;text-wrap:balance}
-.trip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(10px,2.2vw,36px);margin-top:clamp(28px,5vh,72px)}
+.trip{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:clamp(10px,2.2vw,36px);margin-top:clamp(28px,5vh,72px)}
 .trip figure{margin:0;display:flex;flex-direction:column}
 .slot{width:100%;display:block}
 .trip .slot{aspect-ratio:5/4}
 .trip figcaption{display:flex;justify-content:space-between;align-items:baseline;gap:8px;border-top:1px solid var(--hair);padding-top:10px;margin-top:6px}
 .trip figcaption a{text-decoration:none;font-size:clamp(12px,1.25vw,15px);font-weight:500;letter-spacing:-.01em}
 .trip figcaption span{color:var(--graphite)}
+/* five tiles are too narrow on a phone: three, then two centred under them, all one size */
+@media (max-width:700px){.trip{grid-template-columns:repeat(6,minmax(0,1fr));row-gap:clamp(22px,4vh,40px)}.trip figure{grid-column:span 2}.trip figure:nth-child(4){grid-column:2 / span 2}.trip figure:nth-child(5){grid-column:4 / span 2}}
 .now{display:grid;grid-template-columns:minmax(0,1fr);gap:6px;margin-top:clamp(40px,7vh,80px);max-width:60ch}
 .now .mono{color:var(--graphite)}
 .now p{margin:0;font-size:clamp(16px,1.4vw,19px);color:var(--ink-2)}
@@ -175,6 +177,14 @@ html{scroll-behavior:smooth}
       <figure class="rise d1">
         <div class="slot" data-obj="pulse" data-variant="hero" data-delay="0.44"></div>
         <figcaption><a href="#pulseengine">PulseEngine</a><span class="mono">03</span></figcaption>
+      </figure>
+      <figure class="rise d1">
+        <div class="slot" data-obj="board" data-variant="hero" data-delay="0.66"></div>
+        <figcaption><a href="#session-board">Session Board</a><span class="mono">04</span></figcaption>
+      </figure>
+      <figure class="rise d1">
+        <div class="slot" data-obj="scatter" data-variant="hero" data-delay="0.88"></div>
+        <figcaption><a href="#scatter">Scatter</a><span class="mono">05</span></figcaption>
       </figure>
     </div>
     <div class="now rise d2">
@@ -588,15 +598,16 @@ function main() {
     return { g, rows };
   }
   const BOARD = buildBoard(SMALL ? 16 : 22, SMALL ? 90 : 130);
-  function makeBoard() {
+  function makeBoard(variant) {
+    const hero = variant === 'hero';
     const scene = new THREE.Scene(), cam = new THREE.PerspectiveCamera(30, 1, 0.1, 100);
-    const u = { uTime: { value: 0 }, uReveal: { value: 0 }, uRows: { value: BOARD.rows }, uColor: { value: C.ink }, uGain: { value: 1.0 } };
+    const u = { uTime: { value: 0 }, uReveal: { value: 0 }, uRows: { value: BOARD.rows }, uColor: { value: C.ink }, uGain: { value: hero ? 1.35 : 1.0 } };
     const lines = new THREE.LineSegments(BOARD.g, mat(BOARD_VS, INK_FS, u, OVER)); lines.frustumCulled = false;
     const g = new THREE.Group(); g.add(lines); scene.add(g);
     return { scene, cam, update(t, prog, rev, aspect) {
       u.uTime.value = t; u.uReveal.value = rev;
       g.rotation.set(0, -0.2 + (prog - 0.5) * 0.24, 0);
-      const D = 2.2 / (0.2679 * Math.min(aspect, 1));
+      const D = (hero ? 1.95 : 2.2) / (0.2679 * Math.min(aspect, 1));
       cam.position.set(0, D * 0.62, D * 0.8); cam.aspect = aspect; cam.lookAt(0, -0.15, 0); cam.updateProjectionMatrix();
     } };
   }
@@ -604,19 +615,22 @@ function main() {
   /* ---------- the scatter: work born at machine speed, nothing ending it; a check sweeps and flags, it does not delete ---------- */
   const SC_VS = `
     attribute float aSeed, aSp; attribute vec3 aDir;
-    uniform float uTime, uReveal, uPx, uPeriod; varying float vA, vHot;
+    uniform float uTime, uReveal, uPx, uPeriod, uDim; varying float vA, vHot;
+    const float PH = 0.35;                              // never open on an empty frame
     void main(){
-      float cyc = fract(uTime / uPeriod);
+      float cyc = fract(uTime / uPeriod + PH);
       float age = cyc - aSeed * 0.8;
-      float r = 0.06 + aSp * max(age, 0.0) * 2.7;
+      float r = 0.06 + aSp * max(age, 0.0) * 2.0;
       float a = uTime * 0.05 * (1.0 + aSp);
       vec3 d = aDir; d.xz = mat2(cos(a), -sin(a), sin(a), cos(a)) * d.xz;
       vec4 mv = modelViewMatrix * vec4(d * r, 1.0);
-      float rs = fract(uTime / 6.5) * 2.6;
-      float hot = exp(-pow((length(mv.xy) - rs) * 7.0, 2.0)) * step(0.3, age);   // only what has sat too long is flagged
+      float rs = smoothstep(0.45, 0.88, cyc) * 2.2;       // the check runs once per cycle, outward
+      float rr = length(mv.xy);
+      float edge = exp(-pow((rr - rs) * 7.0, 2.0));
+      float hot = step(0.5, age) * (0.75 * step(rr, rs) + 0.9 * edge); // flagged when passed and stays flagged; never removed
       float depth = smoothstep(-2.0, 1.5, mv.z + length(cameraPosition));
       float live = step(0.0, age) * smoothstep(0.0, 0.015, age) * (1.0 - smoothstep(0.93, 1.0, cyc));
-      vA = live * (0.5 + 0.45 * depth) * smoothstep(0.0, 0.6, uReveal);
+      vA = live * (0.38 + 0.32 * depth) * uDim * smoothstep(0.0, 0.6, uReveal);
       vHot = hot * live;
       gl_PointSize = uPx * (1.1 + aSp * 0.9 + hot * 1.6);
       gl_Position = projectionMatrix * mv;
@@ -625,8 +639,9 @@ function main() {
     uniform vec3 uColor, uHot; varying float vA, vHot;
     void main(){ float d = length(gl_PointCoord - 0.5); float m = smoothstep(0.5, 0.25, d);
       float a = clamp((vA + vHot) * m, 0.0, 1.0); vec3 c = mix(uColor, uHot, clamp(vHot, 0.0, 1.0)); gl_FragColor = vec4(c * a, a); }`;
-  const RING_VS = `uniform float uTime, uReveal; varying float vA;
-    void main(){ float rs = fract(uTime / 6.5) * 2.6; vA = 0.2 * uReveal * (1.0 - smoothstep(2.0, 2.6, rs));
+  const RING_VS = `uniform float uTime, uReveal, uPeriod; varying float vA;
+    void main(){ float cyc = fract(uTime / uPeriod + 0.35); float rs = smoothstep(0.45, 0.88, cyc) * 2.2;
+      vA = 0.22 * uReveal * smoothstep(0.0, 0.15, rs) * (1.0 - smoothstep(1.8, 2.2, rs));
       gl_Position = projectionMatrix * modelViewMatrix * vec4(position * rs, 1.0); }`;
   function buildScatter(n) {
     const R = rng(11), pos = [], seed = [], sp = [], dir = [];
@@ -643,17 +658,18 @@ function main() {
   }
   const SCATTER = buildScatter(SMALL ? 900 : 1400);
   const RING = new THREE.BufferGeometry().setFromPoints(Array.from({ length: 160 }, (_, i) => new THREE.Vector3(Math.cos(i / 160 * Math.PI * 2), Math.sin(i / 160 * Math.PI * 2), 0)));
-  function makeScatter() {
+  function makeScatter(variant) {
+    const night = variant === 'chapter';
     const scene = new THREE.Scene(), cam = new THREE.PerspectiveCamera(30, 1, 0.1, 100);
-    const u = { uTime: { value: 0 }, uReveal: { value: 0 }, uPx: { value: 2 }, uPeriod: { value: 26 }, uColor: { value: C.fil }, uHot: { value: C.hot } };
-    const pts = new THREE.Points(SCATTER, mat(SC_VS, SC_FS, u, ADD)); pts.frustumCulled = false;
-    const ring = new THREE.LineLoop(RING, mat(RING_VS, `uniform vec3 uColor; varying float vA; void main(){ gl_FragColor = vec4(uColor * vA, vA); }`, { uTime: u.uTime, uReveal: u.uReveal, uColor: { value: C.hot } }, ADD));
+    const u = { uTime: { value: 0 }, uReveal: { value: 0 }, uPx: { value: 2 }, uPeriod: { value: 26 }, uColor: { value: night ? C.fil : C.ink }, uHot: { value: night ? C.hot : C.ink }, uDim: { value: night ? 1.0 : 1.6 } };
+    const pts = new THREE.Points(SCATTER, mat(SC_VS, SC_FS, u, night ? ADD : OVER)); pts.frustumCulled = false;
+    const ring = new THREE.LineLoop(RING, mat(RING_VS, `uniform vec3 uColor; varying float vA; void main(){ gl_FragColor = vec4(uColor * vA, vA); }`, { uTime: u.uTime, uReveal: u.uReveal, uPeriod: u.uPeriod, uColor: { value: night ? C.hot : C.ink } }, night ? ADD : OVER));
     ring.frustumCulled = false;
     const g = new THREE.Group(); g.add(pts); scene.add(g, ring);
     return { scene, cam, update(t, prog, rev, aspect, px) {
       u.uTime.value = t; u.uReveal.value = rev; u.uPx.value = px;
       g.rotation.set(0.35 + (prog - 0.5) * 0.4, 0, 0);
-      const D = 1.75 / (0.2679 * Math.min(aspect, 1));
+      const D = (night ? 1.45 : 1.05) / (0.2679 * Math.min(aspect, 1));
       cam.position.set(0, 0, D); cam.aspect = aspect; cam.lookAt(0, 0, 0); cam.updateProjectionMatrix();
     } };
   }
