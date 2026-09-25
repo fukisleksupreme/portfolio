@@ -101,6 +101,27 @@ a{color:inherit}
 .scale text{font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;fill:var(--night-dim)}
 .scale .hi{fill:var(--night-ink)}
 
+/* the Session Board, as a mock: invented rows in the real board's layout, labelled as such */
+.mock{margin:4px 0 30px;border-top:1px solid var(--hair)}
+.mock .cap{display:block;color:var(--graphite);padding:10px 0 4px}
+.mock ol{list-style:none;margin:0;padding:0}
+.mock li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 14px;padding:11px 0;border-bottom:1px solid var(--hair)}
+.mock .t{font-size:15px;line-height:1.3;color:var(--ink);font-weight:500;letter-spacing:-.01em;min-width:0}
+.mock .r{display:flex;gap:10px;align-items:baseline;justify-content:flex-end;white-space:nowrap}
+.mock .pct{font-family:var(--mono);font-size:13px;color:var(--ink)}
+.mock .st{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--graphite);border:1px solid var(--hair);border-radius:99px;padding:1px 7px}
+.mock .st.wait{color:var(--ink);border-color:var(--ink)}
+.mock .st.stale{color:#9a3b2c;border-color:#9a3b2c}
+.mock .age{font-family:var(--mono);font-size:11px;color:var(--graphite)}
+.mock .gates{grid-column:1 / -1;display:flex;gap:3px;align-items:center;height:8px}
+.mock .gates i{flex:1;height:3px;background:var(--hair);border-radius:1px}
+.mock .gates i.on{background:var(--ink)}
+.mock .gates b{width:7px;height:7px;flex:none;border:1.3px solid var(--graphite);transform:rotate(45deg);border-radius:1px}
+.mock .gates b.on{background:var(--ink);border-color:var(--ink)}
+.mock .gates b.d{border-radius:50%;transform:none}
+.mock .q{grid-column:1 / -1;font-size:13.5px;color:var(--ink-2);margin:2px 0 0}
+.mock .note{grid-column:1 / -1;font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;color:var(--graphite)}
+
 /* outro */
 .outro{padding-block:clamp(96px,16vh,190px) clamp(56px,9vh,110px);border-top:1px solid var(--hair)}
 .outro p.big{margin:0;font-weight:500;font-size:clamp(34px,6.4vw,100px);line-height:.98;letter-spacing:-.05em;max-width:15ch;text-wrap:balance}
@@ -131,6 +152,8 @@ html{scroll-behavior:smooth}
       <a href="#five-lights">Five Lights</a>
       <a href="#ouroboros">OUROBOROS</a>
       <a href="#pulseengine">PulseEngine</a>
+      <a href="#session-board">Session Board</a>
+      <a href="#scatter">Scatter</a>
       <a href="#contact">Contact</a>
     </nav>
     <a class="mono to-contact" href="#contact">Contact</a>
@@ -210,6 +233,57 @@ html{scroll-behavior:smooth}
         <p><strong>PulseEngine</strong> is real-time visual software for live DJ sets, built for my own. It listens to the music as it plays, locks to the tempo, and drives visuals on the beat. It generates images with AI in real time, transcribes lyrics from the vocals onto the screen as they are sung, and projection-maps the result onto physical surfaces. Motion reactivity is still in development.</p>
         <p>The detail that shaped it: an early build crashed on launch from a bug in its audio analysis, and a quieter one made the tempo estimate meaningless. Both are fixed, and the rule since is to test with real sound in the real room before a set, never after.</p>
         <div class="ch-foot mono"><span class="off">No public link yet</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="session-board" aria-labelledby="h-sb">
+    <div class="wrap ch">
+      <div class="ch-head lift">
+        <p class="mono">04 · One for seeing every session at once</p>
+        <h2 id="h-sb">Session Board</h2>
+        <p class="line">One board showing which of my hundred-plus AI sessions are alive, waiting or done.</p>
+      </div>
+      <div class="slot ch-stage" data-obj="board" data-variant="chapter"></div>
+      <div class="ch-body lift">
+        <figure class="mock" aria-label="Illustrative mock of the board with invented sessions">
+          <span class="cap mono">Illustrative: invented sessions, in the real board’s layout</span>
+          <ol>
+            <li><span class="t">Compare two chart libraries</span><span class="r"><span class="pct">48%</span><span class="st wait">waiting on you</span><span class="age">4m ago</span></span>
+              <span class="gates" aria-hidden="true"><b class="on"></b><i class="on"></i><b class="on"></b><i class="on"></i><b class="d"></b><i></i><b></b><i></i><b></b></span>
+              <span class="q">Asks: keep the lighter library and drop the other? yes / no</span></li>
+            <li><span class="t">Audit the test fixtures</span><span class="r"><span class="pct">71%</span><span class="st">running</span><span class="age">12m ago</span></span>
+              <span class="gates" aria-hidden="true"><b class="on"></b><i class="on"></i><b class="on"></b><i class="on"></i><b class="d on"></b><i class="on"></i><b></b><i></i><b></b></span></li>
+            <li><span class="t">Draft a talk outline</span><span class="r"><span class="pct">99%</span><span class="st">running</span><span class="age">26m ago</span></span>
+              <span class="gates" aria-hidden="true"><b class="on"></b><i class="on"></i><b class="on"></b><i class="on"></i><b class="d on"></b><i class="on"></i><b class="on"></b><i class="on"></i><b></b></span>
+              <span class="note">Every step ticked. Held at 99% until the closing report exists.</span></li>
+            <li><span class="t">Rewrite the onboarding email</span><span class="r"><span class="pct">35%</span><span class="st stale">stale</span><span class="age">3h ago</span></span>
+              <span class="gates" aria-hidden="true"><b class="on"></b><i class="on"></i><b class="on"></b><i></i><b class="d"></b><i></i><b></b><i></i><b></b></span></li>
+            <li><span class="t">Nightly backup check</span><span class="r"><span class="pct">100%</span><span class="st">done</span><span class="age">1d ago</span></span>
+              <span class="gates" aria-hidden="true"><b class="on"></b><i class="on"></i><b class="on"></b><i class="on"></i><b class="d on"></b><i class="on"></i><b class="on"></b><i class="on"></i><b class="on"></b></span></li>
+          </ol>
+        </figure>
+        <p><strong>The Session Board</strong> is how I supervise my AI work sessions. On 2026-09-24 a sweep found at least 100 still open, some three weeks old, with no way to tell which were alive, waiting on me or finished. A status list updated by hand was wrong on 15 of its 22 rows.</p>
+        <p>I treated it as an interface problem: how does one person read a hundred states at a glance? Each session opens its own page on one board and draws its work as a journey of gates, from its purpose to its closing report. Gates needing my decision look different, and a waiting session must state its exact question. Every row shows its age, so a stale one looks stale, and a page cannot show 100% until its closing report exists.</p>
+        <p>It went live on 2026-09-24. Whether sessions keep it current is not yet measured.</p>
+        <div class="ch-foot mono"><span class="off">Private tool, no public link</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter night" id="scatter" aria-labelledby="h-sc">
+    <div class="wrap ch">
+      <div class="ch-head lift">
+        <p class="mono">05 · And finding why they scattered</p>
+        <h2 id="h-sc">Finding the scatter</h2>
+        <p class="line">Finding why my AI system kept losing track of its work, before fixing anything.</p>
+      </div>
+      <div class="slot ch-stage" data-obj="scatter" data-variant="chapter"></div>
+      <div class="ch-body lift">
+        <p><strong>Finding the scatter.</strong> Before moving my AI system to a new computer on 2026-09-24, I checked what existed only on the old one. 163 commits, eight days of work, had never been pushed. At least 100 work sessions were still open. Branches lived on one disk only, one project had no remote, and a status list updated by hand was wrong on 15 of its 22 rows.</p>
+        <p>I did not fix it first. A separate agent diagnosed the cause; a different one gets the repair. The finding: nothing in the lifecycle ends anything. Work is created at machine speed and ended at human speed, and nothing counts the gap. My own end-of-session procedure stopped at a local merge, and said in writing that nothing enforced it.</p>
+        <p>The urgent cleanup was done by hand that night. The preventions are checks, not reminders, designed and not yet built. The <a href="#ouroboros">OUROBOROS</a> lesson again.</p>
+        <div class="ch-foot mono"><span class="off">No public link</span></div>
       </div>
     </div>
   </section>
@@ -480,7 +554,111 @@ function main() {
     } };
   }
 
-  const MAKERS = { lights: makeLights, loop: makeLoop, pulse: makePulse };
+  /* ---------- Session Board: rows of gates, each filling toward a last gate it cannot pass without a report ---------- */
+  const BOARD_VS = `
+    attribute float aKind;                              // 0 track, 1 gate tick
+    uniform float uTime, uReveal, uRows; varying float vA;
+    float h1(float n){ return fract(sin(n) * 43758.5453123); }
+    void main(){
+      float row = position.y, x = position.x;
+      float P = 14.0 + 20.0 * h1(row * 1.7 + 0.3);
+      float cyc = fract(uTime / P + h1(row * 3.1));
+      bool closes = h1(row * 7.3 + 1.0) > 0.3;
+      float fill = min(cyc * 1.3, 0.99);                  // the page stops at 99 until the report is written
+      if (closes && cyc > 0.86) fill = 1.0;
+      float stale = (!closes && cyc > 0.86) ? 0.4 : 1.0; // a row nobody updates dims instead of lying
+      float xf = -1.0 + 2.0 * fill;
+      float on = aKind < 0.5 ? step(x, xf) : step(x, xf + 0.001);
+      float base = aKind < 0.5 ? 0.14 : 0.3;
+      float depth = 1.0 - row / uRows;
+      vA = mix(base, 1.0, on) * stale * mix(0.35, 1.0, depth) * step(row / uRows, uReveal * 1.2) * smoothstep(0.0, 0.04, cyc);
+      vec3 p = vec3(x * 1.55, position.z * 0.07, (row / (uRows - 1.0) - 0.5) * 2.6);
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0);
+    }`;
+  function buildBoard(rows, segs) {
+    const pos = [], kind = [];
+    const G = [-1, -0.5, 0, 0.5, 1];
+    for (let r = 0; r < rows; r++) {
+      for (let s = 0; s < segs; s++) { pos.push(-1 + 2 * s / segs, r, 0, -1 + 2 * (s + 1) / segs, r, 0); kind.push(0, 0); }
+      for (const g of G) { const tall = g === 1 ? 1.8 : 1; pos.push(g, r, -tall, g, r, tall); kind.push(1, 1); }
+    }
+    const g = new THREE.BufferGeometry();
+    g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+    g.setAttribute('aKind', new THREE.Float32BufferAttribute(kind, 1));
+    return { g, rows };
+  }
+  const BOARD = buildBoard(SMALL ? 16 : 22, SMALL ? 90 : 130);
+  function makeBoard() {
+    const scene = new THREE.Scene(), cam = new THREE.PerspectiveCamera(30, 1, 0.1, 100);
+    const u = { uTime: { value: 0 }, uReveal: { value: 0 }, uRows: { value: BOARD.rows }, uColor: { value: C.ink }, uGain: { value: 1.0 } };
+    const lines = new THREE.LineSegments(BOARD.g, mat(BOARD_VS, INK_FS, u, OVER)); lines.frustumCulled = false;
+    const g = new THREE.Group(); g.add(lines); scene.add(g);
+    return { scene, cam, update(t, prog, rev, aspect) {
+      u.uTime.value = t; u.uReveal.value = rev;
+      g.rotation.set(0, -0.2 + (prog - 0.5) * 0.24, 0);
+      const D = 2.2 / (0.2679 * Math.min(aspect, 1));
+      cam.position.set(0, D * 0.62, D * 0.8); cam.aspect = aspect; cam.lookAt(0, -0.15, 0); cam.updateProjectionMatrix();
+    } };
+  }
+
+  /* ---------- the scatter: work born at machine speed, nothing ending it; a check sweeps and flags, it does not delete ---------- */
+  const SC_VS = `
+    attribute float aSeed, aSp; attribute vec3 aDir;
+    uniform float uTime, uReveal, uPx, uPeriod; varying float vA, vHot;
+    void main(){
+      float cyc = fract(uTime / uPeriod);
+      float age = cyc - aSeed * 0.8;
+      float r = 0.06 + aSp * max(age, 0.0) * 2.7;
+      float a = uTime * 0.05 * (1.0 + aSp);
+      vec3 d = aDir; d.xz = mat2(cos(a), -sin(a), sin(a), cos(a)) * d.xz;
+      vec4 mv = modelViewMatrix * vec4(d * r, 1.0);
+      float rs = fract(uTime / 6.5) * 2.6;
+      float hot = exp(-pow((length(mv.xy) - rs) * 7.0, 2.0)) * step(0.3, age);   // only what has sat too long is flagged
+      float depth = smoothstep(-2.0, 1.5, mv.z + length(cameraPosition));
+      float live = step(0.0, age) * smoothstep(0.0, 0.015, age) * (1.0 - smoothstep(0.93, 1.0, cyc));
+      vA = live * (0.5 + 0.45 * depth) * smoothstep(0.0, 0.6, uReveal);
+      vHot = hot * live;
+      gl_PointSize = uPx * (1.1 + aSp * 0.9 + hot * 1.6);
+      gl_Position = projectionMatrix * mv;
+    }`;
+  const SC_FS = `
+    uniform vec3 uColor, uHot; varying float vA, vHot;
+    void main(){ float d = length(gl_PointCoord - 0.5); float m = smoothstep(0.5, 0.25, d);
+      float a = clamp((vA + vHot) * m, 0.0, 1.0); vec3 c = mix(uColor, uHot, clamp(vHot, 0.0, 1.0)); gl_FragColor = vec4(c * a, a); }`;
+  const RING_VS = `uniform float uTime, uReveal; varying float vA;
+    void main(){ float rs = fract(uTime / 6.5) * 2.6; vA = 0.2 * uReveal * (1.0 - smoothstep(2.0, 2.6, rs));
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(position * rs, 1.0); }`;
+  function buildScatter(n) {
+    const R = rng(11), pos = [], seed = [], sp = [], dir = [];
+    for (let i = 0; i < n; i++) {
+      const z = R() * 2 - 1, th = R() * Math.PI * 2, s = Math.sqrt(1 - z * z);
+      pos.push(0, 0, 0); seed.push(i / n); sp.push(0.35 + 0.65 * R()); dir.push(s * Math.cos(th), z * 0.55, s * Math.sin(th));
+    }
+    const g = new THREE.BufferGeometry();
+    g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+    g.setAttribute('aSeed', new THREE.Float32BufferAttribute(seed, 1));
+    g.setAttribute('aSp', new THREE.Float32BufferAttribute(sp, 1));
+    g.setAttribute('aDir', new THREE.Float32BufferAttribute(dir, 3));
+    return g;
+  }
+  const SCATTER = buildScatter(SMALL ? 900 : 1400);
+  const RING = new THREE.BufferGeometry().setFromPoints(Array.from({ length: 160 }, (_, i) => new THREE.Vector3(Math.cos(i / 160 * Math.PI * 2), Math.sin(i / 160 * Math.PI * 2), 0)));
+  function makeScatter() {
+    const scene = new THREE.Scene(), cam = new THREE.PerspectiveCamera(30, 1, 0.1, 100);
+    const u = { uTime: { value: 0 }, uReveal: { value: 0 }, uPx: { value: 2 }, uPeriod: { value: 26 }, uColor: { value: C.fil }, uHot: { value: C.hot } };
+    const pts = new THREE.Points(SCATTER, mat(SC_VS, SC_FS, u, ADD)); pts.frustumCulled = false;
+    const ring = new THREE.LineLoop(RING, mat(RING_VS, `uniform vec3 uColor; varying float vA; void main(){ gl_FragColor = vec4(uColor * vA, vA); }`, { uTime: u.uTime, uReveal: u.uReveal, uColor: { value: C.hot } }, ADD));
+    ring.frustumCulled = false;
+    const g = new THREE.Group(); g.add(pts); scene.add(g, ring);
+    return { scene, cam, update(t, prog, rev, aspect, px) {
+      u.uTime.value = t; u.uReveal.value = rev; u.uPx.value = px;
+      g.rotation.set(0.35 + (prog - 0.5) * 0.4, 0, 0);
+      const D = 1.75 / (0.2679 * Math.min(aspect, 1));
+      cam.position.set(0, 0, D); cam.aspect = aspect; cam.lookAt(0, 0, 0); cam.updateProjectionMatrix();
+    } };
+  }
+
+  const MAKERS = { lights: makeLights, loop: makeLoop, pulse: makePulse, board: makeBoard, scatter: makeScatter };
   const slots = [...document.querySelectorAll('.slot[data-obj]')].map(el => ({
     el, delay: +(el.dataset.delay || 0), start: null, ...MAKERS[el.dataset.obj](el.dataset.variant)
   }));
