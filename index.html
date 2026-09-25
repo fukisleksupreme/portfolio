@@ -59,15 +59,15 @@ a{color:inherit}
 /* hero */
 .hero{padding-block:clamp(104px,17vh,190px) clamp(48px,8vh,96px)}
 .hero h1{margin:0;font-weight:500;font-size:clamp(31px,4.7vw,70px);line-height:1.03;letter-spacing:-.042em;max-width:23ch;text-wrap:balance}
-.trip{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:clamp(10px,2.2vw,36px);margin-top:clamp(28px,5vh,72px)}
+.trip{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:clamp(10px,2.2vw,36px);margin-top:clamp(28px,5vh,72px)}
 .trip figure{margin:0;display:flex;flex-direction:column}
 .slot{width:100%;display:block}
 .trip .slot{aspect-ratio:5/4}
 .trip figcaption{display:flex;justify-content:space-between;align-items:baseline;gap:8px;border-top:1px solid var(--hair);padding-top:10px;margin-top:6px}
 .trip figcaption a{text-decoration:none;font-size:clamp(12px,1.25vw,15px);font-weight:500;letter-spacing:-.01em}
 .trip figcaption span{color:var(--graphite)}
-/* five tiles are too narrow on a phone: three, then two centred under them, all one size */
-@media (max-width:700px){.trip{grid-template-columns:repeat(6,minmax(0,1fr));row-gap:clamp(22px,4vh,40px)}.trip figure{grid-column:span 2}.trip figure:nth-child(4){grid-column:2 / span 2}.trip figure:nth-child(5){grid-column:4 / span 2}}
+/* six tiles are too narrow on a phone: two rows of three */
+@media (max-width:700px){.trip{grid-template-columns:repeat(3,minmax(0,1fr));row-gap:clamp(22px,4vh,40px)}}
 .now{display:grid;grid-template-columns:minmax(0,1fr);gap:6px;margin-top:clamp(40px,7vh,80px);max-width:60ch}
 .now .mono{color:var(--graphite)}
 .now p{margin:0;font-size:clamp(16px,1.4vw,19px);color:var(--ink-2)}
@@ -156,6 +156,7 @@ html{scroll-behavior:smooth}
       <a href="#pulseengine">PulseEngine</a>
       <a href="#session-board">Session Board</a>
       <a href="#scatter">Scatter</a>
+      <a href="#dj-tool">DJ tool</a>
       <a href="#contact">Contact</a>
     </nav>
     <a class="mono to-contact" href="#contact">Contact</a>
@@ -185,6 +186,10 @@ html{scroll-behavior:smooth}
       <figure class="rise d1">
         <div class="slot" data-obj="scatter" data-variant="hero" data-delay="0.88"></div>
         <figcaption><a href="#scatter">Scatter</a><span class="mono">05</span></figcaption>
+      </figure>
+      <figure class="rise d1">
+        <div class="slot" data-obj="sets" data-variant="hero" data-delay="1.1"></div>
+        <figcaption><a href="#dj-tool">DJ library tool</a><span class="mono">06</span></figcaption>
       </figure>
     </div>
     <div class="now rise d2">
@@ -294,6 +299,23 @@ html{scroll-behavior:smooth}
         <p>I did not fix it first. A separate agent diagnosed the cause; a different one gets the repair. The finding: nothing in the lifecycle ends anything. Work is created at machine speed and ended at human speed, and nothing counts the gap. My own end-of-session procedure stopped at a local merge, and said in writing that nothing enforced it.</p>
         <p>The urgent cleanup was done by hand that night. The preventions are checks, not reminders, designed and not yet built. The <a href="#ouroboros">OUROBOROS</a> lesson again.</p>
         <div class="ch-foot mono"><span class="off">No public link</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" id="dj-tool" aria-labelledby="h-dj">
+    <div class="wrap ch">
+      <div class="ch-head lift">
+        <p class="mono">06 · Also for my own DJ sets</p>
+        <h2 id="h-dj">DJ library tool</h2>
+        <p class="line">Finds the tracks on a DJ’s USB stick that their computer is missing.</p>
+      </div>
+      <div class="slot ch-stage" data-obj="sets" data-variant="chapter"></div>
+      <div class="ch-body lift">
+        <p><strong>It has no public name yet.</strong> It is a tool for DJs whose music lives on USB sticks. I built it after deleting the music from my own laptop: one stick held 1,939 files and years of cue and grid prep, and filenames could not tell me which tracks were already home.</p>
+        <p>So it compares the audio. Before writing the tool I tested that on my own library: across 120 renamed, re-encoded copies, filename matching found 0 and fingerprint plus length found 120. It sorts each track into present, missing or uncertain, lets you listen before you tick, copies only what you choose, verifies every copy, and carries cues, grids and playlists into rekordbox through rekordbox’s own XML import. The stick is read-only, and nothing already on the computer is ever moved or overwritten.</p>
+        <p>It works on my own sticks today, and is in development as a product.</p>
+        <div class="ch-foot mono"><span class="off">No public link yet</span></div>
       </div>
     </div>
   </section>
@@ -674,7 +696,58 @@ function main() {
     } };
   }
 
-  const MAKERS = { lights: makeLights, loop: makeLoop, pulse: makePulse, board: makeBoard, scatter: makeScatter };
+  /* ---------- the DJ tool: the stick on the left, the library on the right. matched tracks are linked by a faint line,
+     uncertain ones by a broken one (listen first), and only missing ones travel across. nothing on the right is ever touched ---------- */
+  const SETS_VS = `
+    attribute float aKind;                              // 0 stick, 1 library, 2 link, 3 moving copy
+    uniform float uTime, uReveal, uRows; varying float vA;
+    float h1(float n){ return fract(sin(n) * 43758.5453123); }
+    void main(){
+      float r = position.y, t = position.x;
+      float st = h1(r * 2.31 + 0.7);
+      bool home = st < 0.46, miss = st >= 0.46 && st < 0.86, unsure = st >= 0.86;
+      float cyc = fract(uTime / 16.0 + 0.2);
+      float start = 0.12 + 0.62 * h1(r * 5.17 + 3.0), dur = 0.1;
+      float u = clamp((cyc - start) / dur, 0.0, 1.0);
+      float arrived = step(start + dur, cyc);
+      float fade = 1.0 - smoothstep(0.93, 1.0, cyc);
+      float len = 0.55 + 0.35 * h1(r * 9.1);
+      float x = 0.0, a = 0.0;
+      if (aKind < 0.5) { x = -1.55 + t * len; a = unsure ? 0.55 : 0.95; }
+      else if (aKind < 1.5) { x = 0.55 + t * len; a = home ? 0.95 : (miss ? arrived * fade * 0.95 : 0.0); }
+      else if (aKind < 2.5) { x = mix(-1.55 + len, 0.55, t); a = home ? 0.16 : (unsure ? 0.4 * step(0.5, fract(t * 9.0)) : 0.0); }
+      else { float x0 = mix(-1.55, 0.55, u * u * (3.0 - 2.0 * u)); x = x0 + t * len; a = miss ? 0.95 * step(0.001, u) * (1.0 - arrived) : 0.0; }
+      float y = (0.5 - r / (uRows - 1.0)) * 2.1;
+      vA = a * step(r / uRows, uReveal * 1.25);
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(x, y, 0.0, 1.0);
+    }`;
+  function buildSets(rows) {
+    const pos = [], kind = [];
+    for (let r = 0; r < rows; r++) {
+      for (const k of [0, 1, 3]) { pos.push(0, r, 0, 1, r, 0); kind.push(k, k); }
+      for (let s = 0; s < 18; s++) { pos.push(s / 18, r, 0, (s + 1) / 18, r, 0); kind.push(2, 2); }
+    }
+    const g = new THREE.BufferGeometry();
+    g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+    g.setAttribute('aKind', new THREE.Float32BufferAttribute(kind, 1));
+    return { g, rows };
+  }
+  const SETS = buildSets(SMALL ? 22 : 28);
+  function makeSets(variant) {
+    const hero = variant === 'hero';
+    const scene = new THREE.Scene(), cam = new THREE.PerspectiveCamera(30, 1, 0.1, 100);
+    const u = { uTime: { value: 0 }, uReveal: { value: 0 }, uRows: { value: SETS.rows }, uColor: { value: C.ink }, uGain: { value: hero ? 1.2 : 1.0 } };
+    const lines = new THREE.LineSegments(SETS.g, mat(SETS_VS, INK_FS, u, OVER)); lines.frustumCulled = false;
+    const g = new THREE.Group(); g.add(lines); scene.add(g);
+    return { scene, cam, update(t, prog, rev, aspect) {
+      u.uTime.value = t; u.uReveal.value = rev;
+      g.rotation.set(-0.12 + (prog - 0.5) * 0.2, 0.34, 0);
+      const D = (hero ? 1.7 : 2.25) / (0.2679 * Math.min(aspect, 1));
+      cam.position.set(0, 0, D); cam.aspect = aspect; cam.lookAt(0, 0, 0); cam.updateProjectionMatrix();
+    } };
+  }
+
+  const MAKERS = { lights: makeLights, loop: makeLoop, pulse: makePulse, board: makeBoard, scatter: makeScatter, sets: makeSets };
   const slots = [...document.querySelectorAll('.slot[data-obj]')].map(el => ({
     el, delay: +(el.dataset.delay || 0), start: null, ...MAKERS[el.dataset.obj](el.dataset.variant)
   }));
