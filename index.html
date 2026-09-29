@@ -68,6 +68,8 @@ a{color:inherit}
 .trip figcaption span{color:var(--graphite)}
 /* six tiles are too narrow on a phone: two rows of three */
 @media (max-width:700px){.trip{grid-template-columns:repeat(3,minmax(0,1fr));row-gap:clamp(22px,4vh,40px)}}
+.book{margin:clamp(20px,3.5vh,34px) 0 0}
+.book a{text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:2px}
 .now{display:grid;grid-template-columns:minmax(0,1fr);gap:6px;margin-top:clamp(40px,7vh,80px);max-width:60ch}
 .now .mono{color:var(--graphite)}
 .now p{margin:0;font-size:clamp(16px,1.4vw,19px);color:var(--ink-2)}
@@ -124,6 +126,57 @@ a{color:inherit}
 .mock .q{grid-column:1 / -1;font-size:13.5px;color:var(--ink-2);margin:2px 0 0}
 .mock .note{grid-column:1 / -1;font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;color:var(--graphite)}
 
+/* reserve: the one place a visitor from the bio link can book */
+.reserve{background:var(--night);color:var(--night-ink);padding-block:clamp(96px,14vh,168px)}
+.rs{display:grid;grid-template-columns:minmax(0,1fr);row-gap:clamp(28px,5vh,52px)}
+.rs-head .mono{color:var(--night-dim);margin:0 0 18px}
+.rs h2{margin:0;font-weight:500;font-size:clamp(44px,7.4vw,112px);line-height:.94;letter-spacing:-.052em;max-width:11ch;text-wrap:balance}
+.rs .line{margin:clamp(18px,3vh,30px) 0 0;font-size:clamp(20px,2vw,28px);line-height:1.24;letter-spacing:-.02em;max-width:26ch;text-wrap:balance}
+.rs-body{max-width:58ch}
+.rs-body .mono{color:var(--night-dim)}
+.rs ul{list-style:none;margin:10px 0 34px;padding:0;border-top:1px solid var(--night-hair)}
+.rs li{padding:13px 0;border-bottom:1px solid var(--night-hair);color:var(--night-2)}
+.rs li strong{font-weight:500;color:var(--night-ink)}
+.rs .price{margin:0 0 6px;font-size:clamp(22px,2.2vw,30px);letter-spacing:-.02em;color:var(--night-ink)}
+.rs .terms{margin:0 0 30px;color:var(--night-2)}
+.rs .ask{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline;padding-top:18px;border-top:1px solid var(--night-hair)}
+.rs .ask a{font-size:clamp(18px,1.6vw,22px);text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:2px;overflow-wrap:anywhere}
+.rs .disc{margin:26px 0 0;font-size:15px;color:var(--night-dim)}
+@media (min-width:920px){
+  .rs{grid-template-columns:minmax(0,5fr) minmax(0,6fr);column-gap:clamp(40px,6vw,110px);align-items:start}
+}
+
+/* menu costing: the chapter a bakery owner lands on from the email, with a sample one-page report */
+.mc .ch-head .mono{color:var(--graphite)}
+.mc-body p,.mc-offer p{margin:0 0 1.05em;color:var(--ink-2)}
+.mc-body strong,.mc-offer strong{font-weight:500;color:var(--ink)}
+.mc-offer{max-width:58ch}
+.mc-offer .mono{color:var(--graphite)}
+.mc-offer .price{margin:10px 0 6px;font-size:clamp(22px,2.2vw,30px);letter-spacing:-.02em;color:var(--ink)}
+.mc-offer .terms{color:var(--ink-2)}
+.mc-offer .ask{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline;padding-top:18px;margin-top:26px;border-top:1px solid var(--hair)}
+.mc-offer .ask a{font-size:clamp(18px,1.6vw,22px);text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:2px;overflow-wrap:anywhere}
+.rep{margin:0;background:#fff;border:1px solid var(--hair);border-radius:4px;padding:clamp(20px,2.6vw,36px);box-shadow:0 1px 0 rgba(11,11,12,.03),0 18px 40px -28px rgba(11,11,12,.28)}
+.rep .cap{display:block;color:var(--graphite);margin-bottom:16px}
+.rep h3{margin:0;font-weight:500;font-size:clamp(20px,1.8vw,25px);line-height:1.2;letter-spacing:-.02em}
+.rep .who{margin:6px 0 18px;font-size:14px;color:var(--graphite)}
+.rep table{width:100%;border-collapse:collapse;font-size:14.5px;line-height:1.3}
+.rep th{font-family:var(--mono);font-weight:400;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--graphite);text-align:right;padding:0 0 8px 10px;border-bottom:1px solid var(--ink)}
+.rep th:first-child,.rep td:first-child{text-align:left;padding-left:0}
+.rep td{text-align:right;padding:11px 0 11px 10px;border-bottom:1px solid var(--hair);vertical-align:top;font-variant-numeric:tabular-nums;white-space:nowrap}
+.rep td:first-child{white-space:normal;color:var(--ink);font-weight:500}
+.rep td small{display:block;font-weight:400;font-size:12.5px;color:var(--graphite);margin-top:3px}
+.rep .mbar{display:block;height:3px;background:var(--hair);margin-top:7px;border-radius:1px}
+.rep .mbar i{display:block;height:3px;background:var(--ink);border-radius:1px}
+.rep h4{margin:22px 0 6px;font-family:var(--mono);font-weight:400;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--graphite)}
+.rep p{margin:0;font-size:15px;line-height:1.5;color:var(--ink-2)}
+.rep .fine{margin-top:22px;padding-top:12px;border-top:1px solid var(--hair);font-size:12.5px;line-height:1.45;color:var(--graphite)}
+@media (min-width:920px){
+  .mc .ch-body{grid-column:1;grid-row:2}
+  .mc-offer{grid-column:1;grid-row:3}
+  .rep{grid-column:2;grid-row:2 / span 2;position:sticky;top:8vh;align-self:start}
+}
+
 /* outro */
 .outro{padding-block:clamp(96px,16vh,190px) clamp(56px,9vh,110px);border-top:1px solid var(--hair)}
 .outro p.big{margin:0;font-weight:500;font-size:clamp(34px,6.4vw,100px);line-height:.98;letter-spacing:-.05em;max-width:15ch;text-wrap:balance}
@@ -151,12 +204,14 @@ html{scroll-behavior:smooth}
   <div class="wrap">
     <a class="name" href="#top">Furkan Islek</a>
     <nav class="mono" aria-label="Projects">
+      <a href="#menu-costing">Menu costing</a>
       <a href="#five-lights">Five Lights</a>
       <a href="#ouroboros">OUROBOROS</a>
       <a href="#pulseengine">PulseEngine</a>
       <a href="#session-board">Session Board</a>
       <a href="#scatter">Scatter</a>
       <a href="#dj-tool">DJ tool</a>
+      <a href="#reserve">Reserve</a>
       <a href="#contact">Contact</a>
     </nav>
     <a class="mono to-contact" href="#contact">Contact</a>
@@ -166,6 +221,7 @@ html{scroll-behavior:smooth}
 <main id="top">
   <section class="hero wrap lift">
     <h1 class="rise">I build the tools I needed and could not find: for knowing myself, for running and checking my own AI systems, and for my own DJ sets.</h1>
+    <p class="book mono rise d1"><a href="#menu-costing">Menu costing for bakeries</a> &nbsp; <a href="#reserve">Reserve your brigade</a></p>
     <div class="trip">
       <figure class="rise d1">
         <div class="slot" data-obj="lights" data-variant="hero" data-delay="0"></div>
@@ -195,6 +251,46 @@ html{scroll-behavior:smooth}
     <div class="now rise d2">
       <span class="mono">Currently</span>
       <p>Business Insights &amp; Analytics postgraduate student at Humber College, term 2.</p>
+    </div>
+  </section>
+
+  <section class="chapter mc" id="menu-costing" aria-labelledby="h-mc">
+    <div class="wrap ch">
+      <div class="ch-head lift">
+        <p class="mono">For bakeries and cafés · Menu costing</p>
+        <h2 id="h-mc">Menu costing</h2>
+        <p class="line">I cost a bakery’s menu from its own invoices, then show which prices to change and why.</p>
+      </div>
+      <div class="ch-body mc-body lift">
+        <p><strong>I’m a trained chef.</strong> I hold a Diploma of Professional Culinary Arts from MSA, the Culinary Arts Academy in Istanbul (2023), and a food hygiene and HACCP certificate, and I cooked in restaurant kitchens in Istanbul and Bodrum from 2021 to 2024. Now I study Business Insights and Analytics at Humber, so I read a menu as a cook and as an analyst.</p>
+        <p><strong>One case.</strong> In June 2026 I costed a home-based dessert business in the GTA: 46 recipes and 63 ingredients, in a workbook that recalculates itself. Change one ingredient price and every recipe, margin and wholesale price updates on its own.</p>
+        <p>The biggest finding was about where to bake. A rented commercial kitchen would add $13.33 to the cost of every unit, enough to erase a home-production margin of about 76%. I also recommended a retail and wholesale price for each product, in place of one flat $15 price that undercharged for the premium items. The business is not named here, and none of its data is shown.</p>
+      </div>
+      <figure class="rep lift" aria-labelledby="rep-t">
+        <span class="cap mono">Sample one-page report</span>
+        <h3 id="rep-t">Three items, costed</h3>
+        <p class="who">An illustrative bakery</p>
+        <table>
+          <thead><tr><th scope="col">Item</th><th scope="col">Price</th><th scope="col">Est. cost</th><th scope="col">Est. margin</th></tr></thead>
+          <tbody>
+            <tr><td>Apple pie, 8"</td><td>$20.00</td><td>$10.56</td><td>47%<span class="mbar" aria-hidden="true"><i style="width:47%"></i></span></td></tr>
+            <tr><td>Pecan pie, 8"</td><td>$22.00</td><td>$11.40</td><td>48%<span class="mbar" aria-hidden="true"><i style="width:48%"></i></span></td></tr>
+            <tr><td>Cupcake</td><td>$4.25</td><td>$0.81</td><td>81%<span class="mbar" aria-hidden="true"><i style="width:81%"></i></span></td></tr>
+          </tbody>
+        </table>
+        <h4>What I’d look at first</h4>
+        <p>The apple pie and the pecan pie cost almost the same to make ($10.56 and $11.40, estimated), but the apple pie sells for $2.00 less. At $22.00 its estimated margin is 52% instead of 47%. On a pie for 6 to 8, that is 25 to 33 cents a slice.</p>
+        <h4>What I could not see from outside</h4>
+        <p>Real ingredient prices, portions, waste, boxes and how many of each sell. Those are the review.</p>
+        <p class="fine">An illustrative example with made-up prices; costs are my estimates from Statistics Canada’s Ontario average retail prices for July 2026. Shelf prices run higher than supplier invoices, so these costs are a ceiling.</p>
+      </figure>
+      <div class="mc-offer lift">
+        <span class="mono">Menu Profit Review</span>
+        <p class="price">$950 CAD. $750 for my first three clients.</p>
+        <p>I cost every item on your menu from your own invoices and portions. You get the costed menu, the price changes worth making with the arithmetic behind each, and a 30-day plan, then a call to walk through it.</p>
+        <p class="terms">Remote, five business days. If I don’t find at least three changes worth making, I refund half.</p>
+        <div class="ask"><span class="mono">To start</span><a href="mailto:furkanislek@gmail.com?subject=Menu%20Profit%20Review">Email me at furkanislek@gmail.com</a></div>
+      </div>
     </div>
   </section>
 
@@ -316,6 +412,30 @@ html{scroll-behavior:smooth}
         <p>So it compares the audio. Before writing the tool I tested that on my own library: across 120 renamed, re-encoded copies, filename matching found 0 and fingerprint plus length found 120. It sorts each track into present, missing or uncertain, lets you listen before you tick, copies only what you choose, verifies every copy, and carries cues, grids and playlists into rekordbox through rekordbox’s own XML import. The stick is read-only, and nothing already on the computer is ever moved or overwritten.</p>
         <p>It works on my own sticks today, and is in development as a product.</p>
         <div class="ch-foot mono"><span class="off">No public link yet</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="reserve lift" id="reserve" aria-labelledby="h-rs">
+    <div class="wrap rs">
+      <div class="rs-head">
+        <p class="mono">Reservations open</p>
+        <h2 id="h-rs">Reserve your brigade</h2>
+        <p class="line">A Claude Code setup built for the three jobs you repeat most, tested on a clean machine before you get it.</p>
+      </div>
+      <div class="rs-body">
+        <span class="mono">On the menu</span>
+        <ul>
+          <li><strong>A written intake.</strong> Ten short questions: your tools, the three tasks you repeat most, and the mistakes you keep having to fix.</li>
+          <li><strong>A lean CLAUDE.md,</strong> under 200 lines, written for your work, not a template.</li>
+          <li><strong>Three skills,</strong> one for each task you named, each with a worked example.</li>
+          <li><strong>One or two hooks</strong> that stop a mistake you told me about. They log every time they fire, so you can see whether they help or just get in the way.</li>
+          <li><strong>A handover guide:</strong> how to run it, how to add your next skill yourself, and what to do when Claude Code updates.</li>
+        </ul>
+        <p class="price">$450 USD, fixed.</p>
+        <p class="terms">Written and async; no calls.</p>
+        <div class="ask"><span class="mono">To reserve</span><a href="mailto:furkanislek@gmail.com?subject=Reserve%20my%20brigade">Email me at furkanislek@gmail.com</a></div>
+        <p class="disc">It is the same system I run my own businesses with.</p>
       </div>
     </div>
   </section>
