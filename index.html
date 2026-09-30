@@ -127,7 +127,7 @@ a{color:inherit}
 .mock .q{grid-column:1 / -1;font-size:13.5px;color:var(--ink-2);margin:2px 0 0}
 .mock .note{grid-column:1 / -1;font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;color:var(--graphite)}
 
-/* reserve: the one place a visitor from the bio link can book */
+/* install (#install, old #reserve kept as an alias): the one place a visitor from the bio link can book. Matches install offer v2.1 */
 .reserve{background:var(--night);color:var(--night-ink);padding-block:clamp(96px,14vh,168px)}
 .rs{display:grid;grid-template-columns:minmax(0,1fr);row-gap:clamp(28px,5vh,52px)}
 .rs-head .mono{color:var(--night-dim);margin:0 0 18px}
@@ -143,6 +143,19 @@ a{color:inherit}
 .rs .ask{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline;padding-top:18px;border-top:1px solid var(--night-hair)}
 .rs .ask a{font-size:clamp(18px,1.6vw,22px);text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:2px;overflow-wrap:anywhere}
 .rs .disc{margin:26px 0 0;font-size:15px;color:var(--night-dim)}
+.reserve{scroll-margin-top:0}
+.reserve .alias{position:absolute;top:0;left:0;width:1px;height:1px}
+.rs .lede{margin:0 0 30px;color:var(--night-2)}
+.rs .tiers{margin:10px 0 26px}
+.rs .tiers li{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:16px;row-gap:5px;padding:16px 0}
+.rs .tiers .t{font-weight:500;color:var(--night-ink)}
+.rs .tiers .p{color:var(--night-ink);white-space:nowrap;font-variant-numeric:tabular-nums;text-align:right}
+.rs .tiers .w{grid-column:1/-1;color:var(--night-dim)}
+.rs .tiers .d{grid-column:1/-1}
+.rs .facts{margin:0 0 30px;border-top:0}
+.rs .facts li:last-child{border-bottom:0}
+.rs .facts li{padding:11px 0}
+.rs .ask + .terms{margin:14px 0 0}
 @media (min-width:920px){
   .rs{grid-template-columns:minmax(0,5fr) minmax(0,6fr);column-gap:clamp(40px,6vw,110px);align-items:start}
 }
@@ -228,7 +241,7 @@ html{scroll-behavior:smooth}
       <a href="#session-board">Session Board</a>
       <a href="#scatter">Scatter</a>
       <a href="#dj-tool">DJ tool</a>
-      <a href="#reserve">Reserve</a>
+      <a href="#install">Install</a>
       <a href="#contact">Contact</a>
     </nav>
     <a class="mono to-contact" href="#contact">Contact</a>
@@ -238,7 +251,7 @@ html{scroll-behavior:smooth}
 <main id="top">
   <section class="hero wrap lift">
     <h1 class="rise">I build the tools I needed and could not find: for knowing myself, for running and checking my own AI systems, and for my own DJ sets.</h1>
-    <p class="book mono rise d1"><a href="#menu-costing">Menu engineering for food businesses</a> <a href="#reserve">Reserve your brigade</a></p>
+    <p class="book mono rise d1"><a href="#menu-costing">Menu engineering for food businesses</a> <a href="#install">Claude Code install</a></p>
     <div class="trip">
       <figure class="rise d1">
         <div class="slot" data-obj="lights" data-variant="hero" data-delay="0"></div>
@@ -479,26 +492,31 @@ html{scroll-behavior:smooth}
     </div>
   </section>
 
-  <section class="reserve lift" id="reserve" aria-labelledby="h-rs">
+  <section class="reserve lift" id="install" aria-labelledby="h-rs">
+    <span id="reserve" class="alias" aria-hidden="true"></span>
     <div class="wrap rs">
       <div class="rs-head">
-        <p class="mono">Reservations open</p>
-        <h2 id="h-rs">Reserve your brigade</h2>
-        <p class="line">A Claude Code setup built for the three jobs you repeat most, tested on a clean machine before you get it.</p>
+        <p class="mono">Claude Code install</p>
+        <h2 id="h-rs">Your jobs, set up and tested</h2>
+        <p class="line">The jobs you keep repeating, set up in Claude Code and tested on a clean machine before you get them.</p>
       </div>
       <div class="rs-body">
-        <span class="mono">On the menu</span>
-        <ul>
-          <li><strong>A written intake.</strong> Ten short questions: your tools, the three tasks you repeat most, and the mistakes you keep having to fix.</li>
-          <li><strong>A lean CLAUDE.md,</strong> under 200 lines, written for your work, not a template.</li>
-          <li><strong>Three skills,</strong> one for each task you named, each with a worked example.</li>
-          <li><strong>One or two hooks</strong> that stop a mistake you told me about. They log every time they fire, so you can see whether they help or just get in the way.</li>
-          <li><strong>A handover guide:</strong> how to run it, how to add your next skill yourself, and what to do when Claude Code updates.</li>
+        <p class="lede">You name the jobs you keep doing with Claude: the weekly report, the client brief, the code review, the data pull. For each one I write a skill that knows what goes in, what &ldquo;done&rdquo; looks like to you, and the mistakes you keep correcting by hand. Then I install the whole setup from zero on a clean machine, run it against a stand-in of your job with made-up data, and hand it over with the test log and a guide for adding the next job yourself.</p>
+        <span class="mono">Pick one</span>
+        <ul class="tiers">
+          <li><span class="t">Starter</span><span class="p">$450 USD</span><span class="w mono">5 business days</span><span class="d">Your three most repeated jobs, one skill each, a lean CLAUDE.md, one or two hooks for mistakes you named, a memory folder, the test log and a handover guide. One revision round.</span></li>
+          <li><span class="t">Install</span><span class="p">$1,950 USD</span><span class="w mono">10 business days</span><span class="d">Up to five jobs, plus hooks that log every time they fire and grade themselves, one memory across all your projects, and a written record at the end of every session. Two revision rounds.</span></li>
+          <li><span class="t">Team install</span><span class="p">$4,800 USD</span><span class="w mono">3 to 5 people &middot; 10 business days</span><span class="d">The Install, shared in your repo, one memory per person, and a guide for adding the next person.</span></li>
+          <li><span class="t">Care</span><span class="p">$150 USD / month</span><span class="w mono">after any handover</span><span class="d">Each month I reinstall your setup on the current Claude Code and rerun its test, fix one hook that stopped working, write one new skill, and send a one-page note. Stop at the end of any month.</span></li>
         </ul>
-        <p class="price">$450 USD, fixed.</p>
-        <p class="terms">Written and async; no calls.</p>
-        <div class="ask"><span class="mono">To reserve</span><a href="mailto:furkanislek@gmail.com?subject=Reserve%20my%20brigade">Email me at furkanislek@gmail.com</a></div>
-        <p class="disc">It is the same system I run my own businesses with.</p>
+        <ul class="facts">
+          <li><strong>Full refund</strong> if your setup fails the clean-machine test at handover.</li>
+          <li><strong>Start small, move up:</strong> $450 from a Starter is credited to an Install you start within 30 days of the Starter handover.</li>
+          <li><strong>Written and async.</strong> No calls, no screen shares, no passwords or API keys. Mac or Linux; not Windows yet. Prices fixed, days counted from your completed intake.</li>
+        </ul>
+        <div class="ask"><span class="mono">To start</span><a href="mailto:furkanislek@gmail.com?subject=Claude%20Code%20install&amp;body=The%20three%20jobs%20I%20repeat%20most%3A%0A1.%20%0A2.%20%0A3.%20">Email me the three jobs you repeat most</a></div>
+        <p class="terms">I reply within one business day with a ten-question intake and the invoice.</p>
+        <p class="disc">I run my own small company on this setup every day. I have not delivered it to a client yet, so the first three get a third revision round. No promise of hours saved.</p>
       </div>
     </div>
   </section>
