@@ -68,9 +68,6 @@ a{color:inherit}
 .trip figcaption span{color:var(--graphite)}
 /* six tiles are too narrow on a phone: two rows of three */
 @media (max-width:700px){.trip{grid-template-columns:repeat(3,minmax(0,1fr));row-gap:clamp(22px,4vh,40px)}}
-.book{margin:clamp(20px,3.5vh,34px) 0 0}
-.book{display:flex;flex-wrap:wrap;gap:14px 24px}
-.book a{text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:2px;white-space:nowrap}
 .now{display:grid;grid-template-columns:minmax(0,1fr);gap:6px;margin-top:clamp(40px,7vh,80px);max-width:60ch}
 .now .mono{color:var(--graphite)}
 .now p{margin:0;font-size:clamp(16px,1.4vw,19px);color:var(--ink-2)}
@@ -127,86 +124,6 @@ a{color:inherit}
 .mock .q{grid-column:1 / -1;font-size:13.5px;color:var(--ink-2);margin:2px 0 0}
 .mock .note{grid-column:1 / -1;font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;color:var(--graphite)}
 
-/* install (#install, old #reserve kept as an alias): the one place a visitor from the bio link can book. Matches install offer v2.1 */
-.reserve{background:var(--night);color:var(--night-ink);padding-block:clamp(96px,14vh,168px)}
-.rs{display:grid;grid-template-columns:minmax(0,1fr);row-gap:clamp(28px,5vh,52px)}
-.rs-head .mono{color:var(--night-dim);margin:0 0 18px}
-.rs h2{margin:0;font-weight:500;font-size:clamp(44px,7.4vw,112px);line-height:.94;letter-spacing:-.052em;max-width:11ch;text-wrap:balance}
-.rs .line{margin:clamp(18px,3vh,30px) 0 0;font-size:clamp(20px,2vw,28px);line-height:1.24;letter-spacing:-.02em;max-width:26ch;text-wrap:balance}
-.rs-body{max-width:58ch}
-.rs-body .mono{color:var(--night-dim)}
-.rs ul{list-style:none;margin:10px 0 34px;padding:0;border-top:1px solid var(--night-hair)}
-.rs li{padding:13px 0;border-bottom:1px solid var(--night-hair);color:var(--night-2)}
-.rs li strong{font-weight:500;color:var(--night-ink)}
-.rs .price{margin:0 0 6px;font-size:clamp(22px,2.2vw,30px);letter-spacing:-.02em;color:var(--night-ink)}
-.rs .terms{margin:0 0 30px;color:var(--night-2)}
-.rs .ask{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline;padding-top:18px;border-top:1px solid var(--night-hair)}
-.rs .ask a{font-size:clamp(18px,1.6vw,22px);text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:2px;overflow-wrap:anywhere}
-.rs .disc{margin:26px 0 0;font-size:15px;color:var(--night-dim)}
-.reserve{scroll-margin-top:0}
-.reserve .alias{position:absolute;top:0;left:0;width:1px;height:1px}
-.rs .lede{margin:0 0 30px;color:var(--night-2)}
-.rs .tiers{margin:10px 0 26px}
-.rs .tiers li{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:16px;row-gap:5px;padding:16px 0}
-.rs .tiers .t{font-weight:500;color:var(--night-ink)}
-.rs .tiers .p{color:var(--night-ink);white-space:nowrap;font-variant-numeric:tabular-nums;text-align:right}
-.rs .tiers .w{grid-column:1/-1;color:var(--night-dim)}
-.rs .tiers .d{grid-column:1/-1}
-.rs .facts{margin:0 0 30px;border-top:0}
-.rs .facts li:last-child{border-bottom:0}
-.rs .facts li{padding:11px 0}
-.rs .ask + .terms{margin:14px 0 0}
-@media (min-width:920px){
-  .rs{grid-template-columns:minmax(0,5fr) minmax(0,6fr);column-gap:clamp(40px,6vw,110px);align-items:start}
-}
-
-/* menu engineering: the chapter a restaurant, café or bakery owner lands on from the email. Offer first, three steps, the matrix in plain words, a sample one-page report, who, questions, one email CTA */
-.mc .ch-head .mono{color:var(--graphite)}
-.mc-body p{margin:0 0 1.05em;color:var(--ink-2)}
-.mc-body strong{font-weight:500;color:var(--ink)}
-.mc-h{margin:38px 0 12px;font-family:var(--mono);font-weight:400;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--graphite)}
-.mc-offer{padding:0 0 8px}
-.mc-offer .mono{color:var(--graphite)}
-.mc-offer .price{margin:10px 0 6px;font-size:clamp(22px,2.2vw,30px);letter-spacing:-.02em;color:var(--ink)}
-.mc-offer .terms{color:var(--ink-2);margin-bottom:0}
-.mc-body .ask{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline;padding-top:18px;margin-top:22px;border-top:1px solid var(--hair)}
-.mc-body .ask a{font-size:clamp(18px,1.6vw,22px);text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:2px;overflow-wrap:anywhere}
-.steps,.quad{list-style:none;margin:0 0 18px;padding:0;border-top:1px solid var(--hair)}
-.steps li,.quad li{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:14px;padding:13px 0;border-bottom:1px solid var(--hair);color:var(--ink-2)}
-.steps .n{color:var(--graphite);padding-top:4px;min-width:1.2em}
-.quad .mono{color:var(--ink);padding-top:4px;min-width:8.5ch}
-.steps strong,.quad strong{font-weight:500;color:var(--ink)}
-.faq{margin:0;border-top:1px solid var(--hair)}
-.faq dt{font-weight:500;color:var(--ink);padding:13px 0 3px}
-.faq dd{margin:0;padding:0 0 13px;border-bottom:1px solid var(--hair);color:var(--ink-2)}
-.also{margin-top:38px}
-.also .mono{color:var(--graphite)}
-.also ul{list-style:none;margin:10px 0 0;padding:0;border-top:1px solid var(--hair)}
-.also li{padding:13px 0;border-bottom:1px solid var(--hair);color:var(--ink-2)}
-.also li strong{font-weight:500;color:var(--ink)}
-.also p{margin:12px 0 0;color:var(--ink-2)}
-.rep{margin:0;background:#fff;border:1px solid var(--hair);border-radius:4px;padding:clamp(20px,2.6vw,36px);box-shadow:0 1px 0 rgba(11,11,12,.03),0 18px 40px -28px rgba(11,11,12,.28)}
-.rep .cap{display:block;color:var(--graphite);margin-bottom:16px}
-.rep h3{margin:0;font-weight:500;font-size:clamp(20px,1.8vw,25px);line-height:1.2;letter-spacing:-.02em}
-.rep .who{margin:6px 0 18px;font-size:14px;color:var(--graphite)}
-.rep table{width:100%;border-collapse:collapse;font-size:14.5px;line-height:1.3}
-.rep th{font-family:var(--mono);font-weight:400;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--graphite);text-align:right;padding:0 0 8px 8px;border-bottom:1px solid var(--ink);vertical-align:bottom}
-.rep th:first-child,.rep td:first-child{text-align:left;padding-left:0}
-.rep td{text-align:right;padding:11px 0 11px 8px;border-bottom:1px solid var(--hair);vertical-align:top;font-variant-numeric:tabular-nums;white-space:nowrap}
-.rep td:first-child{white-space:normal;color:var(--ink);font-weight:500}
-.rep td small{display:block;font-weight:400;font-size:12px;color:var(--graphite);margin-top:3px}
-.rep h4{margin:22px 0 6px;font-family:var(--mono);font-weight:400;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--graphite)}
-.rep p{margin:0 0 .8em;font-size:15px;line-height:1.5;color:var(--ink-2)}
-.rep p:last-of-type{margin-bottom:0}
-.rep .fine{margin-top:22px;padding-top:12px;border-top:1px solid var(--hair);font-size:12.5px;line-height:1.45;color:var(--graphite)}
-@media (max-width:380px){.rep table{font-size:13px}}
-@media (min-width:920px){
-  .mc .mc-top{grid-column:1;grid-row:2}
-  .mc .mc-more{grid-column:1;grid-row:3}
-  .mc .mc-more .mc-h:first-child{margin-top:0}
-  .rep{grid-column:2;grid-row:2 / span 2;position:sticky;top:8vh;align-self:start}
-}
-
 /* outro */
 .outro{padding-block:clamp(96px,16vh,190px) clamp(56px,9vh,110px);border-top:1px solid var(--hair)}
 .outro p.big{margin:0;font-weight:500;font-size:clamp(34px,6.4vw,100px);line-height:.98;letter-spacing:-.05em;max-width:15ch;text-wrap:balance}
@@ -234,14 +151,12 @@ html{scroll-behavior:smooth}
   <div class="wrap">
     <a class="name" href="#top">Furkan Islek</a>
     <nav class="mono" aria-label="Projects">
-      <a href="#menu-costing">Menu engineering</a>
       <a href="#five-lights">Five Lights</a>
       <a href="#ouroboros">OUROBOROS</a>
       <a href="#pulseengine">PulseEngine</a>
       <a href="#session-board">Session Board</a>
       <a href="#scatter">Scatter</a>
       <a href="#dj-tool">DJ tool</a>
-      <a href="#install">Install</a>
       <a href="#contact">Contact</a>
     </nav>
     <a class="mono to-contact" href="#contact">Contact</a>
@@ -251,7 +166,6 @@ html{scroll-behavior:smooth}
 <main id="top">
   <section class="hero wrap lift">
     <h1 class="rise">I build the tools I needed and could not find: for knowing myself, for running and checking my own AI systems, and for my own DJ sets.</h1>
-    <p class="book mono rise d1"><a href="#menu-costing">Menu engineering for food businesses</a> <a href="#install">Claude Code install</a></p>
     <div class="trip">
       <figure class="rise d1">
         <div class="slot" data-obj="lights" data-variant="hero" data-delay="0"></div>
@@ -281,92 +195,6 @@ html{scroll-behavior:smooth}
     <div class="now rise d2">
       <span class="mono">Currently</span>
       <p>Business Insights &amp; Analytics postgraduate student at Humber College, term 2.</p>
-    </div>
-  </section>
-
-  <section class="chapter mc" id="menu-costing" aria-labelledby="h-mc">
-    <div class="wrap ch">
-      <div class="ch-head lift">
-        <p class="mono">For restaurants, cafés and bakeries</p>
-        <h2 id="h-mc">Menu engineering</h2>
-        <p class="line">Every item costed from your own invoices, then a plain answer on what to reprice, feature, rework or drop.</p>
-      </div>
-
-      <div class="ch-body mc-body mc-top lift">
-        <div class="mc-offer">
-          <span class="mono">Menu Profit Review</span>
-          <p class="price">$950 CAD. $750 for my first three clients.</p>
-          <p class="terms">Remote, five business days, about 30 minutes of your time. If I don’t find at least three changes worth making, I refund half.</p>
-          <div class="ask"><span class="mono">To start</span><a href="mailto:furkanislek@gmail.com?subject=Menu%20Profit%20Review&amp;body=My%20business%3A%20%0AMenu%20link%3A%20%0A">Email me at furkanislek@gmail.com</a></div>
-        </div>
-
-        <h3 class="mc-h">How it works</h3>
-        <ol class="steps">
-          <li><span class="n mono">1</span><div><strong>You send</strong> your menu, your last month of supplier invoices, and a sales export from your till if it has one. About 30 minutes, by email.</div></li>
-          <li><span class="n mono">2</span><div><strong>I cost and rank.</strong> Each item gets a cost from your prices and portions, a margin in dollars per sale, and, with sales, its place on the matrix below.</div></li>
-          <li><span class="n mono">3</span><div><strong>You get</strong> the costed menu, each change worth making with the arithmetic and what it is worth per month, a 30-day plan, and a call to walk through it.</div></li>
-        </ol>
-
-        <h3 class="mc-h">The idea, in one paragraph</h3>
-        <p>Menu engineering is a method from 1982 (Kasavana and Smith, Michigan State) that most point-of-sale companies now teach. Put each item on two scales, what it earns per sale after ingredients and how often it sells, and it lands in one of four corners:</p>
-        <ul class="quad">
-          <li><span class="mono">Star</span><div>Sells well, earns well. Keep it exactly as it is and give it the best spot.</div></li>
-          <li><span class="mono">Plowhorse</span><div>Sells well, earns little. Reprice it or trim the portion; a small change here is worth the most.</div></li>
-          <li><span class="mono">Puzzle</span><div>Earns well, sells little. Move it, rename it, have staff mention it.</div></li>
-          <li><span class="mono">Dog</span><div>Neither. Rework it or drop it.</div></li>
-        </ul>
-        <p>Percent margin misleads here: a cupcake at 81% earns $3.44 a sale, a pie at 47% earns $9.44. Dollars a week decide. The sample report shows it on three bakery items with made-up numbers.</p>
-      </div>
-
-      <figure class="rep lift" aria-labelledby="rep-t">
-        <span class="cap mono">Sample one-page report</span>
-        <h3 id="rep-t">Three items, costed and ranked</h3>
-        <p class="who">An illustrative bakery</p>
-        <table>
-          <thead><tr><th scope="col">Item</th><th scope="col">Price</th><th scope="col">Est. cost</th><th scope="col">Margin<br>a sale</th><th scope="col">Sells<br>a week</th></tr></thead>
-          <tbody>
-            <tr><td>Apple pie, 8"</td><td>$20.00</td><td>$10.56</td><td>$9.44<small>47%</small></td><td>30</td></tr>
-            <tr><td>Pecan pie, 8"</td><td>$22.00</td><td>$11.40</td><td>$10.60<small>48%</small></td><td>12</td></tr>
-            <tr><td>Cupcake</td><td>$4.25</td><td>$0.81</td><td>$3.44<small>81%</small></td><td>180</td></tr>
-          </tbody>
-        </table>
-        <h4>What I’d look at first</h4>
-        <p>The two pies cost almost the same to make, but the apple pie sells for $2.00 less. At $22.00 it earns $11.44 a sale instead of $9.44: $60 a week at 30 pies, about $260 a month, for a change of 25 to 33 cents a slice.</p>
-        <p>The cupcake has the best percentage and the smallest margin, $3.44 a sale. At 180 a week it earns $619, more than both pies together ($410). It is the item to protect, not the one to raise. The pecan pie earns the most per sale and sells the least: the one to put at the front of the case.</p>
-        <h4>What I could not see from outside</h4>
-        <p>Real ingredient prices, portions, waste, boxes and the real counts. Those are the review.</p>
-        <p class="fine">An illustrative example with made-up prices and counts; costs are my estimates from Statistics Canada’s Ontario average retail prices for July 2026. Shelf prices run higher than supplier invoices, so these costs are a ceiling.</p>
-      </figure>
-
-      <div class="ch-body mc-body mc-more lift">
-        <h3 class="mc-h">Who is doing the costing</h3>
-        <p><strong>A trained chef, now an analyst.</strong> I hold a Diploma of Professional Culinary Arts from MSA, the Culinary Arts Academy in Istanbul (2023), CTH Level 2, and a food hygiene and HACCP certificate, and I cooked in restaurant kitchens in Istanbul and Bodrum from 2021 to 2024. Now I study Business Insights and Analytics at Humber, so I read a menu as a cook and as an analyst.</p>
-        <p><strong>One client so far.</strong> In June 2026 I costed a home-based dessert business in the GTA: 46 recipes and 63 ingredients, in a workbook that recalculates itself when one ingredient price changes. The biggest finding was about where to bake: a rented commercial kitchen would add $13.33 to the cost of every unit, enough to erase a home-production margin of about 76%. I also replaced one flat $15 price, which undercharged for the premium items, with a retail and a wholesale price for each product. The business is not named here, and none of its data is shown.</p>
-
-        <h3 class="mc-h">Questions</h3>
-        <dl class="faq">
-          <dt>How much of my time does it take?</dt>
-          <dd>About 30 minutes to send me the menu, the invoices and the sales export, then the call at the end, at a time you pick.</dd>
-          <dt>What happens to my numbers?</dt>
-          <dd>They stay between us. I don’t publish or share a client’s data; the case above is anonymised for that reason, and I delete the files if you ask.</dd>
-          <dt>What if my prices are already right?</dt>
-          <dd>Then you get a costed menu that says so, item by item, and half the fee back. Three changes worth making is the bar.</dd>
-          <dt>My till can’t export sales.</dt>
-          <dd>The costing and the price changes still work from the menu and the invoices. The popularity half waits until you can count a month of sales, and I’ll say what it would add.</dd>
-          <dt>Why is it cheaper for the first three?</dt>
-          <dd>Because I have one anonymised case and no client I can name yet. That is the whole reason for the $200.</dd>
-        </dl>
-
-        <div class="also">
-          <span class="mono">Also</span>
-          <ul>
-            <li><strong>Recipe development and scaling:</strong> new recipes for your menu, or your recipes scaled to bigger batches, costed and written up.</li>
-            <li><strong>Growth partnership:</strong> for owners who want to take the brand further, into wholesale or new channels, or get it ready to sell.</li>
-          </ul>
-          <p>Ask for a quote.</p>
-        </div>
-        <div class="ask"><span class="mono">To start</span><a href="mailto:furkanislek@gmail.com?subject=Menu%20Profit%20Review&amp;body=My%20business%3A%20%0AMenu%20link%3A%20%0A">Email me at furkanislek@gmail.com</a></div>
-      </div>
     </div>
   </section>
 
@@ -488,35 +316,6 @@ html{scroll-behavior:smooth}
         <p>So it compares the audio. Before writing the tool I tested that on my own library: across 120 renamed, re-encoded copies, filename matching found 0 and fingerprint plus length found 120. It sorts each track into present, missing or uncertain, lets you listen before you tick, copies only what you choose, verifies every copy, and carries cues, grids and playlists into rekordbox through rekordbox’s own XML import. The stick is read-only, and nothing already on the computer is ever moved or overwritten.</p>
         <p>It works on my own sticks today, and is in development as a product.</p>
         <div class="ch-foot mono"><span class="off">No public link yet</span></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="reserve lift" id="install" aria-labelledby="h-rs">
-    <span id="reserve" class="alias" aria-hidden="true"></span>
-    <div class="wrap rs">
-      <div class="rs-head">
-        <p class="mono">Claude Code install</p>
-        <h2 id="h-rs">Your jobs, set up and tested</h2>
-        <p class="line">The jobs you keep repeating, set up in Claude Code and tested on a clean machine before you get them.</p>
-      </div>
-      <div class="rs-body">
-        <p class="lede">You name the jobs you keep doing with Claude: the weekly report, the client brief, the code review, the data pull. For each one I write a skill that knows what goes in, what &ldquo;done&rdquo; looks like to you, and the mistakes you keep correcting by hand. Then I install the whole setup from zero on a clean machine, run it against a stand-in of your job with made-up data, and hand it over with the test log and a guide for adding the next job yourself.</p>
-        <span class="mono">Pick one</span>
-        <ul class="tiers">
-          <li><span class="t">Starter</span><span class="p">$450 USD</span><span class="w mono">5 business days</span><span class="d">Your three most repeated jobs, one skill each, a lean CLAUDE.md, one or two hooks for mistakes you named, a memory folder, the test log and a handover guide. One revision round.</span></li>
-          <li><span class="t">Install</span><span class="p">$1,950 USD</span><span class="w mono">10 business days</span><span class="d">Up to five jobs, plus hooks that log every time they fire with a report of which ones misfire, a memory folder set up in your projects, a written record at the end of each session, and the kit. Two revision rounds.</span></li>
-          <li><span class="t">Team install</span><span class="p">$4,800 USD</span><span class="w mono">3 to 5 people &middot; 10 business days</span><span class="d">The Install, shared in your repo, one memory per person, and a guide for adding the next person.</span></li>
-          <li><span class="t">Care</span><span class="p">$150 USD / month</span><span class="w mono">after any handover</span><span class="d">Each month I reinstall your setup on the current Claude Code and rerun its test, fix one hook that stopped working, write one new skill, and send a one-page note. Stop at the end of any month.</span></li>
-        </ul>
-        <ul class="facts">
-          <li><strong>Full refund</strong> if your setup fails the clean-machine test at handover.</li>
-          <li><strong>Start small, move up:</strong> $450 from a Starter is credited to an Install you start within 30 days of the Starter handover.</li>
-          <li><strong>Written and async.</strong> No calls, no screen shares, no passwords or API keys. Mac or Linux; not Windows yet. Prices fixed, days counted from your completed intake.</li>
-        </ul>
-        <div class="ask"><span class="mono">To start</span><a href="mailto:furkanislek@gmail.com?subject=Claude%20Code%20install&amp;body=The%20three%20jobs%20I%20repeat%20most%3A%0A1.%20%0A2.%20%0A3.%20">Email me the three jobs you repeat most</a></div>
-        <p class="terms">I reply within one business day with a ten-question intake and the invoice.</p>
-        <p class="disc">I run my own small company on this setup every day. I have not delivered it to a client yet, so the first three get a third revision round. No promise of hours saved.</p>
       </div>
     </div>
   </section>
