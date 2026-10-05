@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Furkan Islek</title>
-<meta name="description" content="I build the tools I needed and could not find: for knowing myself, for running and checking my own AI systems, and for my own DJ sets.">
+<meta name="description" content="I learned how to run a team of AI agents in a restaurant kitchen. I set up Claude Code, cost menus from your own invoices, and build tools for my own DJ sets.">
 <meta name="theme-color" content="#f6f6f4">
 <link rel="canonical" href="https://fukisleksupreme.github.io/portfolio/">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://fukisleksupreme.github.io/portfolio/">
 <meta property="og:title" content="Furkan Islek">
-<meta property="og:description" content="I build the tools I needed and could not find: for knowing myself, for running and checking my own AI systems, and for my own DJ sets.">
+<meta property="og:description" content="I learned how to run a team of AI agents in a restaurant kitchen. I set up Claude Code, cost menus from your own invoices, and build tools for my own DJ sets.">
 <meta property="og:image" content="https://fukisleksupreme.github.io/portfolio/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -26,206 +26,7 @@
 <link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.186.0/build/three.module.min.js" crossorigin>
 <link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.186.0/build/three.core.min.js" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500&family=Geist+Mono:wght@400&display=swap">
-<style>
-:root{
-  --paper:#f6f6f4; --ink:#0b0b0c; --ink-2:#2e2e32; --graphite:#6a6a6f; --hair:#d9d9d5;
-  --night:#070707; --night-ink:#ecebe6; --night-2:#bdbab3; --night-dim:#86837c; --night-hair:#262523;
-  --g:clamp(16px,4.2vw,56px);
-  --sans:'Geist',ui-sans-serif,system-ui,-apple-system,'Helvetica Neue',Arial,sans-serif;
-  --mono:'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace;
-  color-scheme:light;
-}
-*{box-sizing:border-box}
-html{background:var(--paper);-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--paper);color:var(--ink);font:400 17px/1.55 var(--sans);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden}
-a{color:inherit}
-:focus-visible{outline:2px solid currentColor;outline-offset:3px}
-
-/* the one canvas; every drawing is rendered into the rectangle of its slot */
-#gl{position:fixed;left:0;top:0;width:100%;height:100vh;height:100lvh;z-index:1;pointer-events:none;display:block}
-.lift{position:relative;z-index:2}
-.wrap{padding-inline:var(--g);max-width:1480px;margin-inline:auto}
-.mono{font-family:var(--mono);font-size:12px;line-height:1.4;letter-spacing:.06em;text-transform:uppercase}
-
-/* bar: sits on the hero and scrolls away, so it never lies over body text */
-.bar{position:absolute;left:0;right:0;top:0;z-index:5;color:var(--ink);padding-top:env(safe-area-inset-top,0px)}
-.bar .wrap{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding-block:18px}
-.bar a{text-decoration:none}
-.bar .name{font-weight:500;font-size:15px;letter-spacing:-.01em}
-.bar nav{display:flex;gap:22px}
-.bar .to-contact{display:none}
-@media (max-width:560px){.bar nav{display:none}.bar .to-contact{display:inline}}
-
-/* hero */
-.hero{padding-block:clamp(104px,17vh,190px) clamp(48px,8vh,96px)}
-.hero h1{margin:0;font-weight:500;font-size:clamp(31px,4.7vw,70px);line-height:1.03;letter-spacing:-.042em;max-width:23ch;text-wrap:balance}
-.trip{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:clamp(10px,2.2vw,36px);margin-top:clamp(28px,5vh,72px)}
-.trip figure{margin:0;display:flex;flex-direction:column}
-.slot{width:100%;display:block}
-.trip .slot{aspect-ratio:5/4}
-.trip figcaption{display:flex;justify-content:space-between;align-items:baseline;gap:8px;border-top:1px solid var(--hair);padding-top:10px;margin-top:6px}
-.trip figcaption a{text-decoration:none;font-size:clamp(12px,1.25vw,15px);font-weight:500;letter-spacing:-.01em}
-.trip figcaption span{color:var(--graphite)}
-/* six tiles are too narrow on a phone: two rows of three */
-@media (max-width:700px){.trip{grid-template-columns:repeat(3,minmax(0,1fr));row-gap:clamp(22px,4vh,40px)}}
-.book{margin:clamp(20px,3.5vh,34px) 0 0}
-.book{display:flex;flex-wrap:wrap;gap:14px 24px}
-.book a{text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:2px;white-space:nowrap}
-.now{display:grid;grid-template-columns:minmax(0,1fr);gap:6px;margin-top:clamp(40px,7vh,80px);max-width:60ch}
-.now .mono{color:var(--graphite)}
-.now p{margin:0;font-size:clamp(16px,1.4vw,19px);color:var(--ink-2)}
-
-/* chapters */
-.chapter{padding-block:clamp(104px,15vh,176px)}
-.chapter.night{background:var(--night);color:var(--night-ink)}
-.ch{display:grid;grid-template-columns:minmax(0,1fr);row-gap:clamp(28px,5vh,56px)}
-.ch-head .mono{color:var(--graphite);margin:0 0 18px}
-.night .ch-head .mono{color:var(--night-dim)}
-.ch h2{margin:0;font-weight:500;font-size:clamp(54px,10.5vw,158px);line-height:.9;letter-spacing:-.058em}
-.ch .line{margin:clamp(18px,3vh,30px) 0 0;font-size:clamp(21px,2.2vw,31px);line-height:1.22;letter-spacing:-.022em;max-width:24ch;text-wrap:balance}
-.ch-stage{width:auto;margin-inline:calc(-1 * var(--g));aspect-ratio:1/1.02;max-width:none}
-.ch-body{max-width:58ch}
-.ch-body p{margin:0 0 1.05em;color:var(--ink-2)}
-.night .ch-body p{color:var(--night-2)}
-.ch-body strong{font-weight:500;color:var(--ink)}
-.night .ch-body strong{color:var(--night-ink)}
-.ch-foot{display:flex;gap:18px;align-items:baseline;padding-top:18px;margin-top:8px;border-top:1px solid var(--hair)}
-.night .ch-foot{border-color:var(--night-hair)}
-.ch-foot a{text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:2px}
-.ch-foot .off{color:var(--graphite)}
-@media (min-width:920px){
-  .ch{grid-template-columns:minmax(0,5fr) minmax(0,6fr);column-gap:clamp(40px,6vw,110px);align-items:start}
-  .ch-head{grid-column:1 / -1;grid-row:1}
-  .ch-body{grid-column:1;grid-row:2}
-  .ch-stage{grid-column:2;grid-row:2;position:sticky;top:10vh;height:80vh;aspect-ratio:auto;margin-inline:0 calc(-1 * var(--g))}
-}
-
-/* the Ten People Test on one scale, numbers verbatim from the case study */
-.scale{margin:4px 0 30px;color:var(--night-dim)}
-.scale svg{display:block;width:100%;max-width:520px;height:auto;overflow:visible}
-.scale text{font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;fill:var(--night-dim)}
-.scale .hi{fill:var(--night-ink)}
-
-/* the Session Board, as a mock: invented rows in the real board's layout, labelled as such */
-.mock{margin:4px 0 30px;border-top:1px solid var(--hair)}
-.mock .cap{display:block;color:var(--graphite);padding:10px 0 4px}
-.mock ol{list-style:none;margin:0;padding:0}
-.mock li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 14px;padding:11px 0;border-bottom:1px solid var(--hair)}
-.mock .t{font-size:15px;line-height:1.3;color:var(--ink);font-weight:500;letter-spacing:-.01em;min-width:0}
-.mock .r{display:flex;gap:10px;align-items:baseline;justify-content:flex-end;white-space:nowrap}
-.mock .pct{font-family:var(--mono);font-size:13px;color:var(--ink)}
-.mock .st{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--graphite);border:1px solid var(--hair);border-radius:99px;padding:1px 7px}
-.mock .st.wait{color:var(--ink);border-color:var(--ink)}
-.mock .st.stale{color:#9a3b2c;border-color:#9a3b2c}
-.mock .age{font-family:var(--mono);font-size:11px;color:var(--graphite)}
-.mock .gates{grid-column:1 / -1;display:flex;gap:3px;align-items:center;height:8px}
-.mock .gates i{flex:1;height:3px;background:var(--hair);border-radius:1px}
-.mock .gates i.on{background:var(--ink)}
-.mock .gates b{width:7px;height:7px;flex:none;border:1.3px solid var(--graphite);transform:rotate(45deg);border-radius:1px}
-.mock .gates b.on{background:var(--ink);border-color:var(--ink)}
-.mock .gates b.d{border-radius:50%;transform:none}
-.mock .q{grid-column:1 / -1;font-size:13.5px;color:var(--ink-2);margin:2px 0 0}
-.mock .note{grid-column:1 / -1;font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;color:var(--graphite)}
-
-/* install (#install, old #reserve kept as an alias): the one place a visitor from the bio link can book. Matches install offer v2.1 */
-.reserve{background:var(--night);color:var(--night-ink);padding-block:clamp(96px,14vh,168px)}
-.rs{display:grid;grid-template-columns:minmax(0,1fr);row-gap:clamp(28px,5vh,52px)}
-.rs-head .mono{color:var(--night-dim);margin:0 0 18px}
-.rs h2{margin:0;font-weight:500;font-size:clamp(44px,7.4vw,112px);line-height:.94;letter-spacing:-.052em;max-width:11ch;text-wrap:balance}
-.rs .line{margin:clamp(18px,3vh,30px) 0 0;font-size:clamp(20px,2vw,28px);line-height:1.24;letter-spacing:-.02em;max-width:26ch;text-wrap:balance}
-.rs-body{max-width:58ch}
-.rs-body .mono{color:var(--night-dim)}
-.rs ul{list-style:none;margin:10px 0 34px;padding:0;border-top:1px solid var(--night-hair)}
-.rs li{padding:13px 0;border-bottom:1px solid var(--night-hair);color:var(--night-2)}
-.rs li strong{font-weight:500;color:var(--night-ink)}
-.rs .price{margin:0 0 6px;font-size:clamp(22px,2.2vw,30px);letter-spacing:-.02em;color:var(--night-ink)}
-.rs .terms{margin:0 0 30px;color:var(--night-2)}
-.rs .ask{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline;padding-top:18px;border-top:1px solid var(--night-hair)}
-.rs .ask a{font-size:clamp(18px,1.6vw,22px);text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:2px;overflow-wrap:anywhere}
-.rs .disc{margin:26px 0 0;font-size:15px;color:var(--night-dim)}
-.reserve{scroll-margin-top:0}
-.reserve .alias{position:absolute;top:0;left:0;width:1px;height:1px}
-.rs .lede{margin:0 0 30px;color:var(--night-2)}
-.rs .tiers{margin:10px 0 26px}
-.rs .tiers li{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:16px;row-gap:5px;padding:16px 0}
-.rs .tiers .t{font-weight:500;color:var(--night-ink)}
-.rs .tiers .p{color:var(--night-ink);white-space:nowrap;font-variant-numeric:tabular-nums;text-align:right}
-.rs .tiers .w{grid-column:1/-1;color:var(--night-dim)}
-.rs .tiers .d{grid-column:1/-1}
-.rs .facts{margin:0 0 30px;border-top:0}
-.rs .facts li:last-child{border-bottom:0}
-.rs .facts li{padding:11px 0}
-.rs .ask + .terms{margin:14px 0 0}
-@media (min-width:920px){
-  .rs{grid-template-columns:minmax(0,5fr) minmax(0,6fr);column-gap:clamp(40px,6vw,110px);align-items:start}
-}
-
-/* menu engineering: the chapter a restaurant, café or bakery owner lands on from the email. Offer first, three steps, the matrix in plain words, a sample one-page report, who, questions, one email CTA */
-.mc .ch-head .mono{color:var(--graphite)}
-.mc-body p{margin:0 0 1.05em;color:var(--ink-2)}
-.mc-body strong{font-weight:500;color:var(--ink)}
-.mc-h{margin:38px 0 12px;font-family:var(--mono);font-weight:400;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--graphite)}
-.mc-offer{padding:0 0 8px}
-.mc-offer .mono{color:var(--graphite)}
-.mc-offer .price{margin:10px 0 6px;font-size:clamp(22px,2.2vw,30px);letter-spacing:-.02em;color:var(--ink)}
-.mc-offer .terms{color:var(--ink-2);margin-bottom:0}
-.mc-body .ask{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline;padding-top:18px;margin-top:22px;border-top:1px solid var(--hair)}
-.mc-body .ask a{font-size:clamp(18px,1.6vw,22px);text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:2px;overflow-wrap:anywhere}
-.steps,.quad{list-style:none;margin:0 0 18px;padding:0;border-top:1px solid var(--hair)}
-.steps li,.quad li{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:14px;padding:13px 0;border-bottom:1px solid var(--hair);color:var(--ink-2)}
-.steps .n{color:var(--graphite);padding-top:4px;min-width:1.2em}
-.quad .mono{color:var(--ink);padding-top:4px;min-width:8.5ch}
-.steps strong,.quad strong{font-weight:500;color:var(--ink)}
-.faq{margin:0;border-top:1px solid var(--hair)}
-.faq dt{font-weight:500;color:var(--ink);padding:13px 0 3px}
-.faq dd{margin:0;padding:0 0 13px;border-bottom:1px solid var(--hair);color:var(--ink-2)}
-.also{margin-top:38px}
-.also .mono{color:var(--graphite)}
-.also ul{list-style:none;margin:10px 0 0;padding:0;border-top:1px solid var(--hair)}
-.also li{padding:13px 0;border-bottom:1px solid var(--hair);color:var(--ink-2)}
-.also li strong{font-weight:500;color:var(--ink)}
-.also p{margin:12px 0 0;color:var(--ink-2)}
-.rep{margin:0;background:#fff;border:1px solid var(--hair);border-radius:4px;padding:clamp(20px,2.6vw,36px);box-shadow:0 1px 0 rgba(11,11,12,.03),0 18px 40px -28px rgba(11,11,12,.28)}
-.rep .cap{display:block;color:var(--graphite);margin-bottom:16px}
-.rep h3{margin:0;font-weight:500;font-size:clamp(20px,1.8vw,25px);line-height:1.2;letter-spacing:-.02em}
-.rep .who{margin:6px 0 18px;font-size:14px;color:var(--graphite)}
-.rep table{width:100%;border-collapse:collapse;font-size:14.5px;line-height:1.3}
-.rep th{font-family:var(--mono);font-weight:400;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--graphite);text-align:right;padding:0 0 8px 8px;border-bottom:1px solid var(--ink);vertical-align:bottom}
-.rep th:first-child,.rep td:first-child{text-align:left;padding-left:0}
-.rep td{text-align:right;padding:11px 0 11px 8px;border-bottom:1px solid var(--hair);vertical-align:top;font-variant-numeric:tabular-nums;white-space:nowrap}
-.rep td:first-child{white-space:normal;color:var(--ink);font-weight:500}
-.rep td small{display:block;font-weight:400;font-size:12px;color:var(--graphite);margin-top:3px}
-.rep h4{margin:22px 0 6px;font-family:var(--mono);font-weight:400;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--graphite)}
-.rep p{margin:0 0 .8em;font-size:15px;line-height:1.5;color:var(--ink-2)}
-.rep p:last-of-type{margin-bottom:0}
-.rep .fine{margin-top:22px;padding-top:12px;border-top:1px solid var(--hair);font-size:12.5px;line-height:1.45;color:var(--graphite)}
-@media (max-width:380px){.rep table{font-size:13px}}
-@media (min-width:920px){
-  .mc .mc-top{grid-column:1;grid-row:2}
-  .mc .mc-more{grid-column:1;grid-row:3}
-  .mc .mc-more .mc-h:first-child{margin-top:0}
-  .rep{grid-column:2;grid-row:2 / span 2;position:sticky;top:8vh;align-self:start}
-}
-
-/* outro */
-.outro{padding-block:clamp(96px,16vh,190px) clamp(56px,9vh,110px);border-top:1px solid var(--hair)}
-.outro p.big{margin:0;font-weight:500;font-size:clamp(34px,6.4vw,100px);line-height:.98;letter-spacing:-.05em;max-width:15ch;text-wrap:balance}
-.meta{display:grid;grid-template-columns:minmax(0,1fr);gap:22px;margin-top:clamp(48px,9vh,110px);color:var(--graphite)}
-.meta p{margin:0}
-.meta .mono{display:block;margin-bottom:6px}
-@media (min-width:760px){.meta{grid-template-columns:repeat(3,minmax(0,1fr))}}
-.meta .v{color:var(--ink-2);font-size:15px;line-height:1.45}
-
-/* load sequence: a short rise, from a resting state that is already readable */
-.rise{animation:rise .95s cubic-bezier(.2,.7,.1,1) both}
-.rise.d1{animation-delay:.08s}.rise.d2{animation-delay:.18s}
-@keyframes rise{from{opacity:.001;transform:translateY(14px)}}
-@media (prefers-reduced-motion:reduce){.rise{animation:none}html{scroll-behavior:auto}}
-html{scroll-behavior:smooth}
-
-#dbg{position:fixed;right:8px;bottom:calc(8px + env(safe-area-inset-bottom,0px));z-index:9;font:11px/1.35 var(--mono);background:#000;color:#0f0;padding:6px 8px;white-space:pre;pointer-events:none}
-.no-gl .slot{background:repeating-linear-gradient(90deg,transparent 0 11px,var(--hair) 11px 12px);opacity:.35}
-</style>
+<link rel="stylesheet" href="site.css">
 </head>
 <body>
 <canvas id="gl" aria-hidden="true"></canvas>
@@ -233,204 +34,74 @@ html{scroll-behavior:smooth}
 <header class="bar">
   <div class="wrap">
     <a class="name" href="#top">Furkan Islek</a>
-    <nav class="mono" aria-label="Projects">
-      <a href="#menu-costing">Menu engineering</a>
-      <a href="#five-lights">Five Lights</a>
-      <a href="#ouroboros">OUROBOROS</a>
-      <a href="#pulseengine">PulseEngine</a>
-      <a href="#session-board">Session Board</a>
-      <a href="#scatter">Scatter</a>
-      <a href="#dj-tool">DJ tool</a>
-      <a href="#install">Install</a>
-      <a href="#contact">Contact</a>
+    <nav class="mono" aria-label="Page">
+      <a href="#about">About</a>
+      <a href="#ai">AI</a>
+      <a href="#food">Food</a>
+      <a href="#music">Music</a>
     </nav>
-    <a class="mono to-contact" href="#contact">Contact</a>
   </div>
 </header>
 
 <main id="top">
-  <section class="hero wrap lift">
-    <h1 class="rise">I build the tools I needed and could not find: for knowing myself, for running and checking my own AI systems, and for my own DJ sets.</h1>
-    <p class="book mono rise d1"><a href="#menu-costing">Menu engineering for food businesses</a> <a href="#install">Claude Code install</a></p>
-    <div class="trip">
-      <figure class="rise d1">
-        <div class="slot" data-obj="lights" data-variant="hero" data-delay="0"></div>
-        <figcaption><a href="#five-lights">Five Lights</a><span class="mono">01</span></figcaption>
-      </figure>
-      <figure class="rise d1">
-        <div class="slot" data-obj="loop" data-variant="hero" data-delay="0.22"></div>
-        <figcaption><a href="#ouroboros">OUROBOROS</a><span class="mono">02</span></figcaption>
-      </figure>
-      <figure class="rise d1">
-        <div class="slot" data-obj="pulse" data-variant="hero" data-delay="0.44"></div>
-        <figcaption><a href="#pulseengine">PulseEngine</a><span class="mono">03</span></figcaption>
-      </figure>
-      <figure class="rise d1">
-        <div class="slot" data-obj="board" data-variant="hero" data-delay="0.66"></div>
-        <figcaption><a href="#session-board">Session Board</a><span class="mono">04</span></figcaption>
-      </figure>
-      <figure class="rise d1">
-        <div class="slot" data-obj="scatter" data-variant="hero" data-delay="0.88"></div>
-        <figcaption><a href="#scatter">Scatter</a><span class="mono">05</span></figcaption>
-      </figure>
-      <figure class="rise d1">
-        <div class="slot" data-obj="sets" data-variant="hero" data-delay="1.1"></div>
-        <figcaption><a href="#dj-tool">DJ library tool</a><span class="mono">06</span></figcaption>
-      </figure>
+<!-- Order, Furkan 2026-10-04 20:1x EDT: "Make the about page first then AI then Food then Music". The two offer doors moved into their categories, each with its price, refund line and email button. -->
+  <section class="hero about wrap lift" id="about" aria-labelledby="h-about" data-verified="2026-10-04" data-source="vault/20_outputs/growth/2026-10-04-portfolio-inventory-and-bio.md;vault/10_wiki/brand/founder-story.md">
+    <span id="hero" class="alias" aria-hidden="true"></span>
+    <p class="mono rise">About</p>
+    <h1 id="h-about" class="rise">I learned how to run a team of AI agents in a restaurant kitchen.</h1>
+    <div class="story rise d1">
+      <p>I trained as a chef, cooked in restaurant kitchens, and now study Business Insights and Analytics at Humber College in Toronto. I set up Claude Code the way I run my own brigade of AI agents, I cost menus from your own invoices, for one paying client so far, and I build tools for my own DJ sets.</p>
     </div>
-    <div class="now rise d2">
-      <span class="mono">Currently</span>
-      <p>Business Insights &amp; Analytics postgraduate student at Humber College, term 2.</p>
-    </div>
+    <a class="oc-more rise d2" href="about.html">Read the whole story</a>
   </section>
 
-  <section class="chapter mc" id="menu-costing" aria-labelledby="h-mc">
-    <div class="wrap ch">
-      <div class="ch-head lift">
-        <p class="mono">For restaurants, cafés and bakeries</p>
-        <h2 id="h-mc">Menu engineering</h2>
-        <p class="line">Every item costed from your own invoices, then a plain answer on what to reprice, feature, rework or drop.</p>
-      </div>
-
-      <div class="ch-body mc-body mc-top lift">
-        <div class="mc-offer">
-          <span class="mono">Menu Profit Review</span>
-          <p class="price">$950 CAD. $750 for my first three clients.</p>
-          <p class="terms">Remote, five business days, about 30 minutes of your time. If I don’t find at least three changes worth making, I refund half.</p>
-          <div class="ask"><span class="mono">To start</span><a href="mailto:furkanislek@gmail.com?subject=Menu%20Profit%20Review&amp;body=My%20business%3A%20%0AMenu%20link%3A%20%0A">Email me at furkanislek@gmail.com</a></div>
-        </div>
-
-        <h3 class="mc-h">How it works</h3>
-        <ol class="steps">
-          <li><span class="n mono">1</span><div><strong>You send</strong> your menu, your last month of supplier invoices, and a sales export from your till if it has one. About 30 minutes, by email.</div></li>
-          <li><span class="n mono">2</span><div><strong>I cost and rank.</strong> Each item gets a cost from your prices and portions, a margin in dollars per sale, and, with sales, its place on the matrix below.</div></li>
-          <li><span class="n mono">3</span><div><strong>You get</strong> the costed menu, each change worth making with the arithmetic and what it is worth per month, a 30-day plan, and a call to walk through it.</div></li>
-        </ol>
-
-        <h3 class="mc-h">The idea, in one paragraph</h3>
-        <p>Menu engineering is a method from 1982 (Kasavana and Smith, Michigan State) that most point-of-sale companies now teach. Put each item on two scales, what it earns per sale after ingredients and how often it sells, and it lands in one of four corners:</p>
-        <ul class="quad">
-          <li><span class="mono">Star</span><div>Sells well, earns well. Keep it exactly as it is and give it the best spot.</div></li>
-          <li><span class="mono">Plowhorse</span><div>Sells well, earns little. Reprice it or trim the portion; a small change here is worth the most.</div></li>
-          <li><span class="mono">Puzzle</span><div>Earns well, sells little. Move it, rename it, have staff mention it.</div></li>
-          <li><span class="mono">Dog</span><div>Neither. Rework it or drop it.</div></li>
-        </ul>
-        <p>Percent margin misleads here: a cupcake at 81% earns $3.44 a sale, a pie at 47% earns $9.44. Dollars a week decide. The sample report shows it on three bakery items with made-up numbers.</p>
-      </div>
-
-      <figure class="rep lift" aria-labelledby="rep-t">
-        <span class="cap mono">Sample one-page report</span>
-        <h3 id="rep-t">Three items, costed and ranked</h3>
-        <p class="who">An illustrative bakery</p>
-        <table>
-          <thead><tr><th scope="col">Item</th><th scope="col">Price</th><th scope="col">Est. cost</th><th scope="col">Margin<br>a sale</th><th scope="col">Sells<br>a week</th></tr></thead>
-          <tbody>
-            <tr><td>Apple pie, 8"</td><td>$20.00</td><td>$10.56</td><td>$9.44<small>47%</small></td><td>30</td></tr>
-            <tr><td>Pecan pie, 8"</td><td>$22.00</td><td>$11.40</td><td>$10.60<small>48%</small></td><td>12</td></tr>
-            <tr><td>Cupcake</td><td>$4.25</td><td>$0.81</td><td>$3.44<small>81%</small></td><td>180</td></tr>
-          </tbody>
-        </table>
-        <h4>What I’d look at first</h4>
-        <p>The two pies cost almost the same to make, but the apple pie sells for $2.00 less. At $22.00 it earns $11.44 a sale instead of $9.44: $60 a week at 30 pies, about $260 a month, for a change of 25 to 33 cents a slice.</p>
-        <p>The cupcake has the best percentage and the smallest margin, $3.44 a sale. At 180 a week it earns $619, more than both pies together ($410). It is the item to protect, not the one to raise. The pecan pie earns the most per sale and sells the least: the one to put at the front of the case.</p>
-        <h4>What I could not see from outside</h4>
-        <p>Real ingredient prices, portions, waste, boxes and the real counts. Those are the review.</p>
-        <p class="fine">An illustrative example with made-up prices and counts; costs are my estimates from Statistics Canada’s Ontario average retail prices for July 2026. Shelf prices run higher than supplier invoices, so these costs are a ceiling.</p>
+  <section class="cat lift" id="ai" aria-labelledby="h-ai" data-verified="2026-10-04" data-source="vault/20_outputs/growth/install-offer-v2/offer.md;vault/20_outputs/growth/2026-10-04-portfolio-categories-plan.md">
+    <div class="wrap cat-head">
+      <p class="mono">01</p>
+      <h2 id="h-ai" class="cat-h">AI systems</h2>
+      <article class="oc" id="install" aria-labelledby="oc-install-t">
+        <span id="reserve" class="alias" aria-hidden="true"></span>
+        <p class="mono oc-k">For people who use Claude Code daily</p>
+        <h3 class="oc-t" id="oc-install-t">Claude Code setup</h3>
+        <p class="oc-d">A setup that works on my machine proves nothing about yours. Your repeated jobs set up as skills and tested on a clean machine before you get them.</p>
+        <p class="oc-p">From $450 USD, fixed · full refund if the test fails</p>
+        <a class="cta" href="mailto:furkanislek@gmail.com?subject=Claude%20Code%20install&amp;body=The%20three%20jobs%20I%20repeat%20most%3A%0A1.%20%0A2.%20%0A3.%20">Email me your three jobs</a>
+        <a class="oc-more" href="install.html">The four plans, what you get, and the test</a>
+      </article>
+    </div>
+    <div class="wrap proof-head" id="proof">
+      <p class="mono">What I built to run my own company</p>
+      <p class="hook-p">To stop losing track of 100 AI sessions, I built a board.</p>
+      <div class="trip four">
+        <figure class="rise d1">
+        <div class="slot" data-obj="board" data-variant="hero" data-delay="0"></div>
+        <figcaption><a href="#session-board">Session Board</a><span class="mono">01</span></figcaption>
       </figure>
-
-      <div class="ch-body mc-body mc-more lift">
-        <h3 class="mc-h">Who is doing the costing</h3>
-        <p><strong>A trained chef, now an analyst.</strong> I hold a Diploma of Professional Culinary Arts from MSA, the Culinary Arts Academy in Istanbul (2023), CTH Level 2, and a food hygiene and HACCP certificate, and I cooked in restaurant kitchens in Istanbul and Bodrum from 2021 to 2024. Now I study Business Insights and Analytics at Humber, so I read a menu as a cook and as an analyst.</p>
-        <p><strong>One client so far.</strong> In June 2026 I costed a home-based dessert business in the GTA: 46 recipes and 63 ingredients, in a workbook that recalculates itself when one ingredient price changes. The biggest finding was about where to bake: a rented commercial kitchen would add $13.33 to the cost of every unit, enough to erase a home-production margin of about 76%. I also replaced one flat $15 price, which undercharged for the premium items, with a retail and a wholesale price for each product. The business is not named here, and none of its data is shown.</p>
-
-        <h3 class="mc-h">Questions</h3>
-        <dl class="faq">
-          <dt>How much of my time does it take?</dt>
-          <dd>About 30 minutes to send me the menu, the invoices and the sales export, then the call at the end, at a time you pick.</dd>
-          <dt>What happens to my numbers?</dt>
-          <dd>They stay between us. I don’t publish or share a client’s data; the case above is anonymised for that reason, and I delete the files if you ask.</dd>
-          <dt>What if my prices are already right?</dt>
-          <dd>Then you get a costed menu that says so, item by item, and half the fee back. Three changes worth making is the bar.</dd>
-          <dt>My till can’t export sales.</dt>
-          <dd>The costing and the price changes still work from the menu and the invoices. The popularity half waits until you can count a month of sales, and I’ll say what it would add.</dd>
-          <dt>Why is it cheaper for the first three?</dt>
-          <dd>Because I have one anonymised case and no client I can name yet. That is the whole reason for the $200.</dd>
-        </dl>
-
-        <div class="also">
-          <span class="mono">Also</span>
-          <ul>
-            <li><strong>Recipe development and scaling:</strong> new recipes for your menu, or your recipes scaled to bigger batches, costed and written up.</li>
-            <li><strong>Growth partnership:</strong> for owners who want to take the brand further, into wholesale or new channels, or get it ready to sell.</li>
-          </ul>
-          <p>Ask for a quote.</p>
-        </div>
-        <div class="ask"><span class="mono">To start</span><a href="mailto:furkanislek@gmail.com?subject=Menu%20Profit%20Review&amp;body=My%20business%3A%20%0AMenu%20link%3A%20%0A">Email me at furkanislek@gmail.com</a></div>
+        <figure class="rise d1">
+        <div class="slot" data-obj="scatter" data-variant="hero" data-delay="0.22"></div>
+        <figcaption><a href="#scatter">Scatter</a><span class="mono">02</span></figcaption>
+      </figure>
+        <figure class="rise d1">
+        <div class="slot" data-obj="loop" data-variant="hero" data-delay="0.44"></div>
+        <figcaption><a href="#ouroboros">OUROBOROS</a><span class="mono">03</span></figcaption>
+      </figure>
+        <figure class="rise d1">
+        <div class="slot" data-obj="lights" data-variant="hero" data-delay="0.66"></div>
+        <figcaption><a href="#five-lights">Five Lights</a><span class="mono">04</span></figcaption>
+      </figure>
       </div>
     </div>
-  </section>
-
-  <section class="chapter night" id="five-lights" aria-labelledby="h-fl">
-    <div class="wrap ch">
-      <div class="ch-head lift">
-        <p class="mono">01 · One for knowing myself</p>
-        <h2 id="h-fl">Five Lights</h2>
-        <p class="line">A self-reflection product that tests whether its own writing is actually about you.</p>
-      </div>
-      <div class="slot ch-stage" data-obj="lights" data-variant="chapter"></div>
-      <div class="ch-body lift">
-        <div class="scale">
-          <svg viewBox="0 0 440 92" role="img" aria-label="Ten People Test: chance is 50%, the corpus scores 60.0% with a 95% CI of 52.7 to 66.9, and the first run scored 72.8%, which was a leak in the test.">
-            <g id="scale-g"></g>
-          </svg>
-        </div>
-        <p><strong>Five Lights</strong> is a self-reflection product: a person gives their birth details and a short intake, and receives a long written reading. It is live, with a real checkout.</p>
-        <p>The frameworks behind it are reflection tools, not science, so the question worth measuring is whether the writing is specific to its reader or would fit anyone. I built two instruments for that. The Ten People Test asks a blind judge to match a sentence to one of two readers’ profiles; chance is 50%, and the corpus scores 60.0% (95% CI 52.7 to 66.9). Its first run scored 72.8%, and that was a leak in the test, not a result: every fix since has lowered the number. A Forer test, where people rate their own reading blind against someone else’s, is collecting its first 17 clean ratings.</p>
-        <div class="ch-foot mono"><a href="https://fivelights.app" rel="noopener">fivelights.app</a></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="chapter" id="ouroboros" aria-labelledby="h-ou">
-    <div class="wrap ch">
-      <div class="ch-head lift">
-        <p class="mono">02 · One for checking my own AI systems</p>
-        <h2 id="h-ou">OUROBOROS</h2>
-        <p class="line">Commission the research, audit it against what’s running, then check the decision actually shipped.</p>
-      </div>
-      <div class="slot ch-stage" data-obj="loop" data-variant="chapter"></div>
-      <div class="ch-body lift">
-        <p><strong>OUROBOROS</strong> is a research, audit and decision process I ran on my own AI agent system. It began with a commissioned report, about 77 sources, on self-improving multi-agent architectures and how to evaluate them.</p>
-        <p>I did not adopt the report. I audited it line by line against what my system actually ran, kept what fit, and refused the rest with reasons: monthly infrastructure budgets in the thousands, GPU clusters, safety layers sourced to vendor marketing.</p>
-        <p>Then I checked what shipped. Of six approved changes, one had become enforced code; five were only prose. Now a decision ships with its mechanism, or it is recorded as not done. The system it grew into works the same way: every change it proposes to itself is tested against a fixed set of tasks first, and one that does worse is never adopted. Still in progress, it is heading toward an agent orchestration system.</p>
-        <div class="ch-foot mono"><span class="off">No public link yet</span></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="chapter" id="pulseengine" aria-labelledby="h-pe">
-    <div class="wrap ch">
-      <div class="ch-head lift">
-        <p class="mono">03 · One for my own DJ sets</p>
-        <h2 id="h-pe">PulseEngine</h2>
-        <p class="line">Software I’m building to turn live DJ music into real-time visuals, lyrics and projection.</p>
-      </div>
-      <div class="slot ch-stage" data-obj="pulse" data-variant="chapter"></div>
-      <div class="ch-body lift">
-        <p><strong>PulseEngine</strong> is real-time visual software for live DJ sets, built for my own. It listens to the music as it plays, locks to the tempo, and drives visuals on the beat. It generates images with AI in real time, transcribes lyrics from the vocals onto the screen as they are sung, and projection-maps the result onto physical surfaces. Motion reactivity is still in development.</p>
-        <p>The detail that shaped it: an early build crashed on launch from a bug in its audio analysis, and a quieter one made the tempo estimate meaningless. Both are fixed, and the rule since is to test with real sound in the real room before a set, never after.</p>
-        <div class="ch-foot mono"><span class="off">No public link yet</span></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="chapter" id="session-board" aria-labelledby="h-sb">
-    <div class="wrap ch">
-      <div class="ch-head lift">
-        <p class="mono">04 · One for seeing every session at once</p>
-        <h2 id="h-sb">Session Board</h2>
-        <p class="line">One board showing which of my hundred-plus AI sessions are alive, waiting or done.</p>
-      </div>
+    <section class="ab-row" id="session-board" aria-labelledby="h-sb" data-verified="2026-09-30" data-source="park/session-board.md">
+      <details class="ab">
+        <summary class="wrap lift">
+          <span class="ab-text">
+            <span class="mono ab-k">01 · Seeing every session at once</span>
+            <h3 id="h-sb" class="ab-h">Session Board</h3>
+            <span class="ab-line">One board showing which of my hundred-plus AI sessions are alive, waiting or done.</span>
+          </span>
+          <span class="ab-chev" aria-hidden="true"></span>
+        </summary>
+        <div class="wrap ch ab-body">
       <div class="slot ch-stage" data-obj="board" data-variant="chapter"></div>
       <div class="ch-body lift">
         <figure class="mock" aria-label="Illustrative mock of the board with invented sessions">
@@ -455,74 +126,194 @@ html{scroll-behavior:smooth}
         <p>It went live on 2026-09-24. Whether sessions keep it current is not yet measured.</p>
         <div class="ch-foot mono"><span class="off">Private tool, no public link</span></div>
       </div>
-    </div>
-  </section>
-
-  <section class="chapter night" id="scatter" aria-labelledby="h-sc">
-    <div class="wrap ch">
-      <div class="ch-head lift">
-        <p class="mono">05 · And finding why they scattered</p>
-        <h2 id="h-sc">Finding the scatter</h2>
-        <p class="line">Finding why my AI system kept losing track of its work, before fixing anything.</p>
-      </div>
+        </div>
+      </details>
+    </section>
+    <section class="ab-row night" id="scatter" aria-labelledby="h-sc" data-verified="2026-09-30" data-source="vault/20_outputs/2026-09-24-diagnosis-session-scatter.md;park/scatter-prevention.md">
+      <details class="ab">
+        <summary class="wrap lift">
+          <span class="ab-text">
+            <span class="mono ab-k">02 · Finding why my sessions scattered</span>
+            <h3 id="h-sc" class="ab-h">Finding the scatter</h3>
+            <span class="ab-line">Finding why my AI system kept losing track of its work, before fixing anything.</span>
+          </span>
+          <span class="ab-chev" aria-hidden="true"></span>
+        </summary>
+        <div class="wrap ch ab-body">
       <div class="slot ch-stage" data-obj="scatter" data-variant="chapter"></div>
       <div class="ch-body lift">
+        <!-- correction: positioning plan section 5, #scatter; the built prevention is scripts/setupcheck.py check 7, commit 623dd8c5 (25 Sep 2026) -->
         <p><strong>Finding the scatter.</strong> Before moving my AI system to a new computer on 2026-09-24, I checked what existed only on the old one. 163 commits, eight days of work, had never been pushed. At least 100 work sessions were still open. Branches lived on one disk only, one project had no remote, and a status list updated by hand was wrong on 15 of its 22 rows.</p>
         <p>I did not fix it first. A separate agent diagnosed the cause; a different one gets the repair. The finding: nothing in the lifecycle ends anything. Work is created at machine speed and ended at human speed, and nothing counts the gap. My own end-of-session procedure stopped at a local merge, and said in writing that nothing enforced it.</p>
-        <p>The urgent cleanup was done by hand that night. The preventions are checks, not reminders, designed and not yet built. The <a href="#ouroboros">OUROBOROS</a> lesson again.</p>
+        <p>The urgent cleanup was done by hand that night. The first prevention is built: since 25 September a census check flags work that exists only on one disk. The rest are designed, not yet built. The <a href="#ouroboros">OUROBOROS</a> lesson again.</p>
         <div class="ch-foot mono"><span class="off">No public link</span></div>
       </div>
-    </div>
-  </section>
-
-  <section class="chapter" id="dj-tool" aria-labelledby="h-dj">
-    <div class="wrap ch">
-      <div class="ch-head lift">
-        <p class="mono">06 · Also for my own DJ sets</p>
-        <h2 id="h-dj">DJ library tool</h2>
-        <p class="line">Finds the tracks on a DJ’s USB stick that their computer is missing.</p>
-      </div>
-      <div class="slot ch-stage" data-obj="sets" data-variant="chapter"></div>
+        </div>
+      </details>
+    </section>
+    <section class="ab-row" id="ouroboros" aria-labelledby="h-ou" data-verified="2026-09-30" data-source="vault/20_outputs/growth/2026-09-22-portfolio-content.md">
+      <details class="ab">
+        <summary class="wrap lift">
+          <span class="ab-text">
+            <span class="mono ab-k">03 · Checking my own AI systems</span>
+            <h3 id="h-ou" class="ab-h">OUROBOROS</h3>
+            <span class="ab-line">Commission the research, audit it against what’s running, then check the decision actually shipped.</span>
+          </span>
+          <span class="ab-chev" aria-hidden="true"></span>
+        </summary>
+        <div class="wrap ch ab-body">
+      <div class="slot ch-stage" data-obj="loop" data-variant="chapter"></div>
       <div class="ch-body lift">
-        <p><strong>It has no public name yet.</strong> It is a tool for DJs whose music lives on USB sticks. I built it after deleting the music from my own laptop: one stick held 1,939 files and years of cue and grid prep, and filenames could not tell me which tracks were already home.</p>
-        <p>So it compares the audio. Before writing the tool I tested that on my own library: across 120 renamed, re-encoded copies, filename matching found 0 and fingerprint plus length found 120. It sorts each track into present, missing or uncertain, lets you listen before you tick, copies only what you choose, verifies every copy, and carries cues, grids and playlists into rekordbox through rekordbox’s own XML import. The stick is read-only, and nothing already on the computer is ever moved or overwritten.</p>
-        <p>It works on my own sticks today, and is in development as a product.</p>
+        <p><strong>OUROBOROS</strong> is a research, audit and decision process I ran on my own AI agent system. It began with a commissioned report, about 77 sources, on self-improving multi-agent architectures and how to evaluate them.</p>
+        <p>I did not adopt the report. I audited it line by line against what my system actually ran, kept what fit, and refused the rest with reasons: monthly infrastructure budgets in the thousands, GPU clusters, safety layers sourced to vendor marketing.</p>
+        <p>Then I checked what shipped. Of six approved changes, one had become enforced code; five were only prose. Now a decision ships with its mechanism, or it is recorded as not done. The system it grew into works the same way: every change it proposes to itself is tested against a fixed set of tasks first, and one that does worse is never adopted. Still in progress, it is heading toward an agent orchestration system.</p>
         <div class="ch-foot mono"><span class="off">No public link yet</span></div>
       </div>
+        </div>
+      </details>
+    </section>
+    <section class="ab-row night" id="five-lights" aria-labelledby="h-fl" data-verified="2026-09-30" data-source="park/swaptest.md;park/forertest.md">
+      <details class="ab">
+        <summary class="wrap lift">
+          <span class="ab-text">
+            <span class="mono ab-k">04 · An AI product for knowing yourself</span>
+            <h3 id="h-fl" class="ab-h">Five Lights</h3>
+            <span class="ab-line">A self-reflection product that tests whether its own writing is actually about you.</span>
+          </span>
+          <span class="ab-chev" aria-hidden="true"></span>
+        </summary>
+        <div class="wrap ch ab-body">
+      <div class="slot ch-stage" data-obj="lights" data-variant="chapter"></div>
+      <div class="ch-body lift">
+        <div class="scale">
+          <!-- correction: positioning plan section 5, #five-lights; numbers from park/swaptest.md (audit 2026-09-26) -->
+            <svg viewBox="0 0 440 112" role="img" aria-label="Ten People Test: chance is 50%. The corpus scores 60.0% with a 95% CI of 52.7 to 66.9. After the 26 September audit removed sentences that repeat a chart fact, the rest score 55.4% with a 95% CI of 47.6 to 63.0, which includes chance.">
+            <g id="scale-g"></g>
+          </svg>
+        </div>
+        <p><strong>Five Lights</strong> is a self-reflection product: a person gives their birth details and a short intake, and receives a long written reading. It is live, with a real checkout.</p>
+        <p>The frameworks behind it are reflection tools, not science, so the question worth measuring is whether the writing is specific to its reader or would fit anyone. I built two instruments for that. The Ten People Test asks a blind judge to place one sentence between two readers’ chart cards, a two-person placement rate; chance is 50%. The corpus scores 60.0% (95% CI 52.7 to 66.9). An audit on 26 September removed the sentences that repeat a chart fact word for word, and the rest score 55.4% (47.6 to 63.0), an interval that includes chance. Every fix to the test so far has lowered the number. A Forer test, where people rate their own reading blind against someone else’s, is collecting its first 17 clean ratings.</p>
+        <div class="ch-foot mono"><a href="https://fivelights.app" rel="noopener">fivelights.app</a></div>
+      </div>
+        </div>
+      </details>
+    </section>
+    <section class="ab-row" id="honest" aria-labelledby="h-honest" data-verified="2026-10-04" data-source="vault/20_outputs/growth/2026-10-04-portfolio-categories-plan.md;vault/20_outputs/growth/2026-10-04-portfolio-inventory-and-bio.md;park/swaptest.md">
+      <details class="ab">
+        <summary class="wrap lift">
+          <span class="ab-text">
+            <span class="mono ab-k">05 · How I keep it honest</span>
+            <h3 id="h-honest" class="ab-h">Rules, leaks, laws and local models</h3>
+            <span class="ab-line">Rules that get graded, a score I keep lowering, a shelf of cited laws, and models measured on my own Mac.</span>
+          </span>
+          <span class="ab-chev" aria-hidden="true"></span>
+        </summary>
+        <div class="wrap ab-body">
+      <ul class="proof-rows">
+        <!-- local-models row: copy v1 section 5, counts checked there against the 2026-09-25 measurement file -->
+        <li data-verified="2026-09-30" data-source="vault/20_outputs/2026-09-25-local-models-m5-pro-measured.md"><span class="mono">Local models</span><span class="row-t">On my own Mac mini (M5 Pro, 64 GB) I tested four image models and two video models. One video model finishes a clip. Two local text models scored 17 of 20 on a twenty-task test, matching one cloud run.</span></li>
+        <!-- rules row and leak row: bio v2 session 2026-10-04; numbers from vault/20_outputs/2026-09-17-gate-fire-rates-measurement.md and CLAUDE.md "Ten People Test" (ledger out/swaptest/ledger.jsonl), cited in the data-source file's facts table -->
+        <li data-verified="2026-10-04" data-source="vault/20_outputs/growth/2026-10-04-portfolio-inventory-and-bio.md;vault/20_outputs/2026-09-17-gate-fire-rates-measurement.md;scripts/downscale.py"><span class="mono">Rules</span><span class="row-t"><strong>My AI agents follow rules, and the rules get graded too.</strong> Every rule logs each time it fires. I measured one: it blocked a third of all turns, and about one block in twenty stood on a wrong fact. So a rule marked wrong five times in 28 days, with no right mark, drops to a warning. One right mark restores it.</span></li>
+        <li data-verified="2026-10-04" data-source="vault/20_outputs/growth/2026-10-04-portfolio-inventory-and-bio.md;scripts/swaptest.py"><span class="mono">Leaks</span><span class="row-t"><strong>My best number was a leak.</strong> I built a test: can a blind judge tell which person a sentence of their personal report was written for? Chance is 50%. The first run scored 72.8%. Two blind judges found the test was leaking its own answer key. Each leak I closed brought the score down, to 62.8% and then 60.0%. A later audit took out the sentences that repeat a chart fact, and the rest score 55.4%, a range that includes chance. Every fix has lowered the number, and I publish the lowest.</span></li>
+        <!-- codex row: copy v1 section 7 with the coordinator's wording: my rule, the counts, the cited laws, "private", and no usage claim.
+             Counts recounted 2026-10-01 from the law headings in vault/10_wiki/codex/*.md (27 books with laws, 425 numbered laws, 424 live with evidence and where-it-breaks, one struck as merged); the README index says 423 because its marketing row still reads 14 where the book holds 16, so the page says "over 420"; the freshness check re-derives them from the README index.
+             Recounted 2026-10-04 from the README index: 30 books with laws, 483 laws (new since 1 Oct: color, japanese-words, sound-and-voice). Storytelling 2, 8 and 15 added for the About story.
+             The law list is the copy file's list plus storytelling 9, which the picked #install hook applies (copy v1 section 3). -->
+        <li data-verified="2026-10-04" data-source="vault/10_wiki/codex/README.md"><span class="mono">Codex</span><span class="row-t">My rule: open the field&rsquo;s book first, and cite the law I apply. On 4 October 2026 the shelf held 30 books and over 480 laws, and each law records its evidence and where it breaks. The laws this page applies: selling 4, 5 and 9; marketing 3 and 11; going-viral 5 and 9; storytelling 2, 6, 8, 9, 14, 15 and 19; law-and-trust 3 and 4; research-method 15. The books are private.</span></li>
+      </ul>
+        </div>
+      </details>
+    </section>
+  </section>
+
+  <section class="cat lift" id="food" aria-labelledby="h-food" data-verified="2026-10-04" data-source="vault/20_outputs/growth/menu-profit-review/01-offer-and-reconciliation.md;vault/20_outputs/growth/2026-10-04-portfolio-categories-plan.md">
+    <span id="menu-costing" class="alias" aria-hidden="true"></span>
+    <div class="wrap cat-head">
+      <p class="mono">02</p>
+      <h2 id="h-food" class="cat-h">Food and menus</h2>
+      <p class="hook-p">A high margin percentage can still mean the fewest dollars per sale.</p>
+      <article class="oc" aria-labelledby="oc-menu-t">
+        <p class="mono oc-k">For restaurants, cafés and bakeries</p>
+        <h3 class="oc-t" id="oc-menu-t">Menu Profit Review</h3>
+        <p class="oc-d">Every item costed from your own invoices, then a plain answer on what to reprice, feature, rework or drop.</p>
+        <p class="oc-p">$950 CAD · $750 CAD for my first three clients</p>
+        <p class="oc-r">If I find fewer than three changes worth making, I refund half.</p>
+        <a class="cta" href="mailto:furkanislek@gmail.com?subject=Menu%20Profit%20Review&amp;body=My%20business%3A%20%0AMenu%20link%3A%20%0A">Email me your menu</a>
+        <a class="oc-more" href="menu.html">How it works, a sample report and questions</a>
+      </article>
+      <p class="cat-also">Also: recipe development and scaling, and a growth partnership for owners taking a brand further. Ask for a quote.</p>
     </div>
   </section>
 
-  <section class="reserve lift" id="install" aria-labelledby="h-rs">
-    <span id="reserve" class="alias" aria-hidden="true"></span>
-    <div class="wrap rs">
-      <div class="rs-head">
-        <p class="mono">Claude Code install</p>
-        <h2 id="h-rs">Your jobs, set up and tested</h2>
-        <p class="line">The jobs you keep repeating, set up in Claude Code and tested on a clean machine before you get them.</p>
-      </div>
-      <div class="rs-body">
-        <p class="lede">You name the jobs you keep doing with Claude: the weekly report, the client brief, the code review, the data pull. For each one I write a skill that knows what goes in, what &ldquo;done&rdquo; looks like to you, and the mistakes you keep correcting by hand. Then I install the whole setup from zero on a clean machine, run it against a stand-in of your job with made-up data, and hand it over with the test log and a guide for adding the next job yourself.</p>
-        <span class="mono">Pick one</span>
-        <ul class="tiers">
-          <li><span class="t">Starter</span><span class="p">$450 USD</span><span class="w mono">5 business days</span><span class="d">Your three most repeated jobs, one skill each, a lean CLAUDE.md, one or two hooks for mistakes you named, a memory folder, the test log and a handover guide. One revision round.</span></li>
-          <li><span class="t">Install</span><span class="p">$1,950 USD</span><span class="w mono">10 business days</span><span class="d">Up to five jobs, plus hooks that log every time they fire with a report of which ones misfire, a memory folder set up in your projects, a written record at the end of each session, and the kit. Two revision rounds.</span></li>
-          <li><span class="t">Team install</span><span class="p">$4,800 USD</span><span class="w mono">3 to 5 people &middot; 10 business days</span><span class="d">The Install, shared in your repo, one memory per person, and a guide for adding the next person.</span></li>
-          <li><span class="t">Care</span><span class="p">$150 USD / month</span><span class="w mono">after any handover</span><span class="d">Each month I reinstall your setup on the current Claude Code and rerun its test, fix one hook that stopped working, write one new skill, and send a one-page note. Stop at the end of any month.</span></li>
-        </ul>
-        <ul class="facts">
-          <li><strong>Full refund</strong> if your setup fails the clean-machine test at handover.</li>
-          <li><strong>Start small, move up:</strong> $450 from a Starter is credited to an Install you start within 30 days of the Starter handover.</li>
-          <li><strong>Written and async.</strong> No calls, no screen shares, no passwords or API keys. Mac or Linux; not Windows yet. Prices fixed, days counted from your completed intake.</li>
-        </ul>
-        <div class="ask"><span class="mono">To start</span><a href="mailto:furkanislek@gmail.com?subject=Claude%20Code%20install&amp;body=The%20three%20jobs%20I%20repeat%20most%3A%0A1.%20%0A2.%20%0A3.%20">Email me the three jobs you repeat most</a></div>
-        <p class="terms">I reply within one business day with a ten-question intake and the invoice.</p>
-        <p class="disc">I run my own small company on this setup every day. I have not delivered it to a client yet, so the first three get a third revision round. No promise of hours saved.</p>
+  <section class="cat lift" id="music" aria-labelledby="h-music" data-verified="2026-10-04" data-source="vault/20_outputs/growth/2026-09-22-portfolio-content.md;park/afterset.md;vault/20_outputs/growth/2026-10-04-portfolio-categories-plan.md">
+    <span id="also-built" class="alias" aria-hidden="true"></span>
+    <div class="wrap cat-head">
+      <p class="mono">03</p>
+      <h2 id="h-music" class="cat-h">Music and DJ tools</h2>
+      <p class="hook-p">Two tools I needed for my own DJ sets and could not find, so I built them.</p>
+      <div class="trip two">
+        <figure class="rise d1">
+        <div class="slot" data-obj="pulse" data-variant="hero" data-delay="0"></div>
+        <figcaption><a href="#pulseengine">PulseEngine</a><span class="mono">01</span></figcaption>
+      </figure>
+        <figure class="rise d1">
+        <div class="slot" data-obj="sets" data-variant="hero" data-delay="0.22"></div>
+        <figcaption><a href="#dj-tool">DJ set preparation tool</a><span class="mono">02</span></figcaption>
+      </figure>
       </div>
     </div>
+    <section class="ab-row" id="pulseengine" aria-labelledby="h-pe" data-verified="2026-09-30" data-source="vault/20_outputs/growth/2026-09-22-portfolio-content.md">
+      <details class="ab">
+        <summary class="wrap lift">
+          <span class="ab-text">
+            <span class="mono ab-k">01 · Visuals for my own DJ sets</span>
+            <h3 id="h-pe" class="ab-h">PulseEngine</h3>
+            <span class="ab-line">Software I’m building to turn live DJ music into real-time visuals, lyrics and projection.</span>
+          </span>
+          <span class="ab-chev" aria-hidden="true"></span>
+        </summary>
+        <div class="wrap ch ab-body">
+      <div class="slot ch-stage" data-obj="pulse" data-variant="chapter"></div>
+      <div class="ch-body lift">
+        <p><strong>PulseEngine</strong> is real-time visual software for live DJ sets, built for my own. It listens to the music as it plays, locks to the tempo, and drives visuals on the beat. It generates images with AI in real time, transcribes lyrics from the vocals onto the screen as they are sung, and projection-maps the result onto physical surfaces. Motion reactivity is still in development.</p>
+        <p>The detail that shaped it: an early build crashed on launch from a bug in its audio analysis, and a quieter one made the tempo estimate meaningless. Both are fixed, and the rule since is to test with real sound in the real room before a set, never after.</p>
+        <div class="ch-foot mono"><span class="off">No public link yet</span></div>
+      </div>
+        </div>
+      </details>
+    </section>
+    <!-- correction: positioning plan section 5, #dj-tool, then copy v1 section 6 (DJ set preparation tool); source park/afterset.md (26 Sep: set builder, tracklist-to-playlist built, waiting on his first real run) -->
+    <section class="ab-row" id="dj-tool" aria-labelledby="h-dj" data-verified="2026-09-30" data-source="park/afterset.md">
+      <details class="ab">
+        <summary class="wrap lift">
+          <span class="ab-text">
+            <span class="mono ab-k">02 · Preparing my own DJ sets</span>
+            <h3 id="h-dj" class="ab-h">DJ set preparation tool</h3>
+            <span class="ab-line">Prepares a DJ’s sets: finds what a USB stick has that the computer lacks, and turns a tracklist into a rekordbox playlist.</span>
+          </span>
+          <span class="ab-chev" aria-hidden="true"></span>
+        </summary>
+        <div class="wrap ch ab-body">
+      <div class="slot ch-stage" data-obj="sets" data-variant="chapter"></div>
+      <div class="ch-body lift">
+        <p><strong>It has no public name yet.</strong> I built it after deleting the music from my own laptop: one stick held 1,939 files, and filenames could not tell me which tracks were already home. So it compares the audio. In a test on my own library, across 120 renamed, re-encoded copies, filename matching found 0 and audio matching found 120.</p>
+        <p>Two parts of set preparation are built and tested in code: building a set, and writing a tracklist into a rekordbox playlist. Neither has been used on a real gig yet. That first run is still to come.</p>
+        <div class="ch-foot mono"><span class="off">No public link yet</span></div>
+      </div>
+        </div>
+      </details>
+    </section>
   </section>
+
+
+  
+
+  
+
+  
+
 
   <footer class="outro wrap lift">
-    <p class="big">I build the tools I need, then use them myself.</p>
     <div class="meta">
       <p><span class="mono">Furkan Islek</span><span class="v">Business Insights &amp; Analytics postgraduate student at Humber College, term 2.</span></p>
       <p><span class="mono">Live</span><span class="v"><a href="https://fivelights.app" rel="noopener">fivelights.app</a></span></p>
@@ -532,26 +323,47 @@ html{scroll-behavior:smooth}
 </main>
 
 <script>
-/* the scale figure is drawn from the case study's own numbers, so it cannot drift from the text */
+/* the scale figure is drawn from the case study's own numbers, so it cannot drift from the text:
+   chance, then the corpus (60.0, 52.7 to 66.9), then the corpus after the 26 September audit (55.4, 47.6 to 63.0) */
 (function(){
   var g=document.getElementById('scale-g'); if(!g) return;
-  var lo=48, hi=76, x0=8, x1=432, y=48;
+  var lo=44, hi=70, x0=8, x1=432, y=44;
   function X(v){return x0+(v-lo)/(hi-lo)*(x1-x0);}
-  var ns='http://www.w3.org/2000/svg', s='';
+  var s='';
   s+='<line x1="'+x0+'" y1="'+y+'" x2="'+x1+'" y2="'+y+'" stroke="currentColor" stroke-width="1" opacity=".45"/>';
-  [50,55,60,65,70,75].forEach(function(v){s+='<line x1="'+X(v)+'" y1="'+(y-3)+'" x2="'+X(v)+'" y2="'+(y+3)+'" stroke="currentColor" opacity=".5"/>';});
-  s+='<line x1="'+X(50)+'" y1="'+(y-14)+'" x2="'+X(50)+'" y2="'+(y+14)+'" stroke="currentColor" stroke-dasharray="2 3"/>';
-  s+='<text x="'+X(50)+'" y="'+(y-20)+'">chance 50%</text>';
-  s+='<line x1="'+X(52.7)+'" y1="'+y+'" x2="'+X(66.9)+'" y2="'+y+'" stroke="#ecd3a4" stroke-width="3"/>';
-  s+='<line x1="'+X(52.7)+'" y1="'+(y-6)+'" x2="'+X(52.7)+'" y2="'+(y+6)+'" stroke="#ecd3a4"/>';
-  s+='<line x1="'+X(66.9)+'" y1="'+(y-6)+'" x2="'+X(66.9)+'" y2="'+(y+6)+'" stroke="#ecd3a4"/>';
-  s+='<circle cx="'+X(60)+'" cy="'+y+'" r="4.5" fill="#fff8ea"/>';
-  s+='<text class="hi" x="'+X(60)+'" y="'+(y-20)+'" text-anchor="middle">60.0%</text>';
-  s+='<text x="'+X(59.8)+'" y="'+(y+26)+'" text-anchor="middle">95% CI 52.7 to 66.9</text>';
-  s+='<circle cx="'+X(72.8)+'" cy="'+y+'" r="4" fill="none" stroke="currentColor"/>';
-  s+='<text x="'+X(72.8)+'" y="'+(y-20)+'" text-anchor="middle">72.8%</text>';
-  s+='<text x="'+x1+'" y="'+(y+26)+'" text-anchor="end">first run, a leak</text>';
+  [45,50,55,60,65,70].forEach(function(v){s+='<line x1="'+X(v)+'" y1="'+(y-3)+'" x2="'+X(v)+'" y2="'+(y+3)+'" stroke="currentColor" opacity=".5"/>';});
+  s+='<line x1="'+X(50)+'" y1="'+(y-14)+'" x2="'+X(50)+'" y2="'+(y+34)+'" stroke="currentColor" stroke-dasharray="2 3"/>';
+  s+='<text x="'+X(50)+'" y="'+(y-20)+'" text-anchor="middle">chance 50%</text>';
+  function iv(lo_,pt,hi_,yy,label,cls,col){
+    s+='<line x1="'+X(lo_)+'" y1="'+yy+'" x2="'+X(hi_)+'" y2="'+yy+'" stroke="'+col+'" stroke-width="3"/>';
+    s+='<line x1="'+X(lo_)+'" y1="'+(yy-6)+'" x2="'+X(lo_)+'" y2="'+(yy+6)+'" stroke="'+col+'"/>';
+    s+='<line x1="'+X(hi_)+'" y1="'+(yy-6)+'" x2="'+X(hi_)+'" y2="'+(yy+6)+'" stroke="'+col+'"/>';
+    s+='<circle cx="'+X(pt)+'" cy="'+yy+'" r="4.5" fill="'+(cls==='hi'?'#fff8ea':'none')+'" stroke="'+(cls==='hi'?'none':'currentColor')+'"/>';
+    s+='<text class="'+cls+'" x="'+X(pt)+'" y="'+(yy-12)+'" text-anchor="middle">'+label+'</text>';
+  }
+  iv(52.7,60.0,66.9,y,'60.0%','hi','#ecd3a4');
+  iv(47.6,55.4,63.0,y+34,'55.4%','','#bdbab3');
+  s+='<text x="'+x1+'" y="'+(y+60)+'" text-anchor="end">95% CI, before and after the 26 September audit</text>';
   g.innerHTML=s;
+})();
+</script>
+
+<script>
+/* a hash link into a collapsed "Also built" row opens that row, on load, on a hash change, and when the link is clicked again after the row was closed */
+(function(){
+  function openFor(){
+    var id=''; try{ id=decodeURIComponent(location.hash.slice(1)); }catch(e){ return; }
+    if(!id) return;
+    var t=document.getElementById(id); if(!t) return;
+    var r=t.closest?t.closest('.ab-row'):null; if(!r) return;
+    var d=r.querySelector('details'); if(d && !d.open){ d.open=true; r.scrollIntoView(); }
+  }
+  addEventListener('hashchange', openFor);
+  document.addEventListener('click', function(e){
+    var a=e.target.closest?e.target.closest('a[href^="#"]'):null;
+    if(a){ var h=a.getAttribute('href'); if(h && h.length>1){ var el=document.getElementById(h.slice(1)); var r=el&&el.closest('.ab-row'); if(r){ var d=r.querySelector('details'); if(d && !d.open){ d.open=true; } } } }
+  });
+  openFor();
 })();
 </script>
 
@@ -950,7 +762,7 @@ function main() {
 
   const MAKERS = { lights: makeLights, loop: makeLoop, pulse: makePulse, board: makeBoard, scatter: makeScatter, sets: makeSets };
   const slots = [...document.querySelectorAll('.slot[data-obj]')].map(el => ({
-    el, delay: +(el.dataset.delay || 0), start: null, ...MAKERS[el.dataset.obj](el.dataset.variant)
+    el, delay: +(el.dataset.delay || 0), start: null, det: el.closest('details'), ...MAKERS[el.dataset.obj](el.dataset.variant)
   }));
 
   let dpr = Math.min(devicePixelRatio || 1, DPR_CAP), W = 0, H = 0;
@@ -967,6 +779,8 @@ function main() {
     let n = 0;
     const jobs = [];
     for (const s of slots) {
+      /* a slot inside a collapsed "Also built" row keeps a layout box, so skip it until its row is open */
+      if (s.det && !s.det.open) continue;
       const r = s.el.getBoundingClientRect();
       if (r.bottom <= 0 || r.top >= H || r.right <= 0 || r.left >= W || r.width < 2 || r.height < 2) continue;
       jobs.push([s, r]);
@@ -1043,6 +857,7 @@ function main() {
   document.addEventListener('visibilitychange', () => { last = 0; iv = []; wk = []; });
   addEventListener('scroll', kick, { passive: true });
   addEventListener('resize', kick);
+  document.addEventListener('toggle', kick, true);   /* a row opening or closing changes what is on screen, also when frozen */
   perf.mode = live ? 'live' : 'reduced-motion';
   if (live) raf = requestAnimationFrame(loop); else kick();
 
