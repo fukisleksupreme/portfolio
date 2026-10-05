@@ -270,6 +270,9 @@ html{scroll-behavior:smooth}
 .oc-r{margin:0 0 12px;color:var(--ink-2);font-size:15px;line-height:1.4}
 .oc .cta{margin-top:8px}
 .about.hero .story{margin-top:clamp(14px,2.4vh,26px)}
+.cases{max-width:62ch;margin-top:clamp(28px,4.4vh,48px)}
+.cases>.mono{margin:0;color:var(--graphite)}
+.cases .proof-rows{margin-top:12px}
 .cat-also{margin:14px 0 0;max-width:62ch;color:var(--ink-2);font-size:15px;line-height:1.45}
 .about .oc-more{margin-top:14px}
 .trip.four{grid-template-columns:repeat(4,minmax(0,1fr))}
